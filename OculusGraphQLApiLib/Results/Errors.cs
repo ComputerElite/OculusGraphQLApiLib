@@ -6,6 +6,6 @@ namespace OculusGraphQLApiLib.Results
     {
         public string message { get; set; } = "";
         public string serverity { get; set; } = "";
-        public List<string> path { get; set; } = new List<string>();
+        public List<object> path { get; set; } = new List<object>();
     }
 }

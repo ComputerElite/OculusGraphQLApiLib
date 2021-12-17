@@ -77,12 +77,12 @@ namespace OculusGraphQLApiLib
             }
         }
 
-        public static GraphQLClient VersionHistory(string appid)
+        public static Data<Application> VersionHistory(string appid)
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "1586217024733717";
             c.options.variables = "{\"id\":\"" + appid + "\"}";
-            return c;
+            return JsonSerializer.Deserialize<Data<Application>>(c.Request());
         }
 
         public static GraphQLClient AllApps(Headset headset)

@@ -7,7 +7,8 @@ namespace OculusGraphQLApiLibCLI
     {
         static void Main(string[] args)
         {
-            Tests.StoreSearch();
+            Tests.VersionHistory();
+            //Tests.StoreSearch();
             //Tests.CurrentVersionOfApp();
             //Tests.ReleaseChannelsOfApp();
             //Tests.ReleaseChannelReleases();

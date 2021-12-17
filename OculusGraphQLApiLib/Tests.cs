@@ -47,6 +47,13 @@ namespace OculusGraphQLApiLib
             Stop();
         }
 
+        public static void VersionHistory()
+        {
+            Start();
+            Console.WriteLine(Serialize( GraphQLClient.VersionHistory(appid)));
+            Stop();
+        }
+
         public static string Serialize<T>(T o)
         {
             return JsonSerializer.Serialize(o, new JsonSerializerOptions { WriteIndented = true });

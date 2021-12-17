@@ -1,6 +1,7 @@
 ﻿using ComputerUtils.ConsoleUi;
 using ComputerUtils.FileManaging;
 using ComputerUtils.Logging;
+using ComputerUtils.VarUtils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,6 +36,7 @@ namespace OculusGraphQLApiLib.Game
                 Console.ForegroundColor = ConsoleColor.White;
                 return false;
             }
+            Console.WriteLine();
             Manifest manifest = JsonSerializer.Deserialize<Manifest>(File.ReadAllText(manifestPath));
             ProgressBarUI totalProgress = new ProgressBarUI();
             totalProgress.Start();
@@ -42,9 +44,12 @@ namespace OculusGraphQLApiLib.Game
             FileManager.RecreateDirectoryIfExisting("tmp");
             int done = 0;
             Logger.notAllowedStrings.Add(access_token);
+            long total = 0;
+            foreach (KeyValuePair<string, ManifestFile> f in manifest.files) total += f.Value.size;
+            List<KeyValuePair<DateTime, long>> lastBytes = new List<KeyValuePair<DateTime, long>>();
+            totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
             foreach (KeyValuePair<string, ManifestFile> f in manifest.files)
             {
-                totalProgress.UpdateProgress(done, manifest.files.Count, done.ToString(), manifest.files.Count.ToString());
                 List<byte> final = new List<byte>();
                 foreach (object[] segment in f.Value.segments)
                 {
@@ -53,13 +58,17 @@ namespace OculusGraphQLApiLib.Game
                     Stream s = File.OpenRead("tmp" + Path.DirectorySeparatorChar + "file");
                     s.ReadByte();
                     s.ReadByte();
-                    final.AddRange(Decompress(s));
+                    byte[] decompressed = Decompress(s);
+                    done += decompressed.Length;
+                    final.AddRange(decompressed);
                     s.Close();
                     File.Delete("tmp" + Path.DirectorySeparatorChar +  "file");
+
+                    totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
+                    Console.WriteLine();
                 }
                 FileManager.CreateDirectoryIfNotExisting(FileManager.GetParentDirIfExisting(destination + f.Key.Replace('/', Path.DirectorySeparatorChar)));
                 File.WriteAllBytes(destination + f.Key.Replace('/', Path.DirectorySeparatorChar), final.ToArray());
-                done++;
             }
             Console.ForegroundColor = ConsoleColor.White;
             return Validator.ValidateGameInstall(destination, manifestPath);
