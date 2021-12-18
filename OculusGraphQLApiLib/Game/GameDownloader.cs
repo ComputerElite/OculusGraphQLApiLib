@@ -15,12 +15,13 @@ namespace OculusGraphQLApiLib.Game
 {
     public class GameDownloader
     {
-        private static byte[] Decompress(Stream input)
+        private static void Decompress(Stream input, string dest)
         {
             Ionic.Zlib.DeflateStream s = new Ionic.Zlib.DeflateStream(input, Ionic.Zlib.CompressionMode.Decompress);
-            MemoryStream m = new MemoryStream();
-            s.CopyTo(m);
-            return m.ToArray();
+            FileStream res = File.Open(dest, FileMode.Append);
+            s.CopyTo(res);
+            res.Close();
+            return;
         }
 
         public static bool DownloadRiftGame(string destination, string access_token, string binaryId)
@@ -42,7 +43,7 @@ namespace OculusGraphQLApiLib.Game
             totalProgress.Start();
             DownloadProgressUI segmentDownloader = new DownloadProgressUI();
             FileManager.RecreateDirectoryIfExisting("tmp");
-            int done = 0;
+            long done = 0;
             Logger.notAllowedStrings.Add(access_token);
             long total = 0;
             foreach (KeyValuePair<string, ManifestFile> f in manifest.files) total += f.Value.size;
@@ -51,6 +52,9 @@ namespace OculusGraphQLApiLib.Game
             foreach (KeyValuePair<string, ManifestFile> f in manifest.files)
             {
                 List<byte> final = new List<byte>();
+                string fileDest = destination + f.Key.Replace('/', Path.DirectorySeparatorChar);
+                if (File.Exists(fileDest)) File.Delete(fileDest);
+                FileManager.CreateDirectoryIfNotExisting(FileManager.GetParentDirIfExisting(destination + f.Key.Replace('/', Path.DirectorySeparatorChar)));
                 foreach (object[] segment in f.Value.segments)
                 {
                     string url = "https://securecdn.oculus.com/binaries/segment/?access_token=" + access_token + "&binary_id=" + binaryId + "&segment_sha256=" + segment[1];
@@ -58,17 +62,14 @@ namespace OculusGraphQLApiLib.Game
                     Stream s = File.OpenRead("tmp" + Path.DirectorySeparatorChar + "file");
                     s.ReadByte();
                     s.ReadByte();
-                    byte[] decompressed = Decompress(s);
-                    done += decompressed.Length;
-                    final.AddRange(decompressed);
+                    Decompress(s, fileDest);
                     s.Close();
                     File.Delete("tmp" + Path.DirectorySeparatorChar +  "file");
-
-                    totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
-                    Console.WriteLine();
                 }
-                FileManager.CreateDirectoryIfNotExisting(FileManager.GetParentDirIfExisting(destination + f.Key.Replace('/', Path.DirectorySeparatorChar)));
-                File.WriteAllBytes(destination + f.Key.Replace('/', Path.DirectorySeparatorChar), final.ToArray());
+
+                done += new FileInfo(fileDest).Length;
+                totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
+                Console.WriteLine();
             }
             Console.ForegroundColor = ConsoleColor.White;
             return Validator.ValidateGameInstall(destination, manifestPath);
