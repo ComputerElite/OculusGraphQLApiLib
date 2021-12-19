@@ -20,7 +20,9 @@ namespace OculusGraphQLApiLib.Game
             Ionic.Zlib.DeflateStream s = new Ionic.Zlib.DeflateStream(input, Ionic.Zlib.CompressionMode.Decompress);
             FileStream res = File.Open(dest, FileMode.Append);
             s.CopyTo(res);
+            s.Close();
             res.Close();
+            res.Dispose();
             return;
         }
 
@@ -51,7 +53,6 @@ namespace OculusGraphQLApiLib.Game
             totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
             foreach (KeyValuePair<string, ManifestFile> f in manifest.files)
             {
-                List<byte> final = new List<byte>();
                 string fileDest = destination + f.Key.Replace('/', Path.DirectorySeparatorChar);
                 if (File.Exists(fileDest)) File.Delete(fileDest);
                 FileManager.CreateDirectoryIfNotExisting(FileManager.GetParentDirIfExisting(destination + f.Key.Replace('/', Path.DirectorySeparatorChar)));
