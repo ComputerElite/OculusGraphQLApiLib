@@ -85,6 +85,14 @@ namespace OculusGraphQLApiLib
             return JsonSerializer.Deserialize<Data<Application>>(c.Request());
         }
 
+        public static ViewerData<OculusUserWrapper> GetCurrentUser()
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "4149322231793299";
+            c.options.variables = "{}";
+            return JsonSerializer.Deserialize<ViewerData<OculusUserWrapper>>(c.Request());
+        }
+
         public static GraphQLClient AllApps(Headset headset)
         {
             GraphQLClient c = OculusTemplate();
