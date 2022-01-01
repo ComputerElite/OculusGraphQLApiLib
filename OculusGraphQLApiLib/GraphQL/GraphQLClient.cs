@@ -97,7 +97,7 @@ namespace OculusGraphQLApiLib
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "3821696797949516";
-            c.options.variables = "{\"sectionId\":\"" + (headset == Headset.MONTEREY ? "1888816384764129" : "1736210353282450") + "\",\"sortOrder\":null,\"sectionItemCount\":500,\"sectionCursor\":null,\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\"}";
+            c.options.variables = "{\"sectionId\":\"" + (headset == Headset.MONTEREY ? "1888816384764129" : "1736210353282450") + "\",\"sortOrder\":null,\"sectionItemCount\":1500,\"sectionCursor\":null,\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\"}";
             return c;
         }
 
