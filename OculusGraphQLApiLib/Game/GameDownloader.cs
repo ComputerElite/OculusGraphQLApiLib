@@ -43,6 +43,7 @@ namespace OculusGraphQLApiLib.Game
             Manifest manifest = JsonSerializer.Deserialize<Manifest>(File.ReadAllText(manifestPath));
             ProgressBarUI totalProgress = new ProgressBarUI();
             totalProgress.Start();
+            totalProgress.eTARange = 20;
             DownloadProgressUI segmentDownloader = new DownloadProgressUI();
             FileManager.RecreateDirectoryIfExisting("tmp");
             long done = 0;
