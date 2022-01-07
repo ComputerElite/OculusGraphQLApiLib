@@ -97,7 +97,21 @@ namespace OculusGraphQLApiLib
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "3821696797949516";
-            c.options.variables = "{\"sectionId\":\"" + (headset == Headset.MONTEREY ? "1888816384764129" : "1736210353282450") + "\",\"sortOrder\":null,\"sectionItemCount\":1500,\"sectionCursor\":null,\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\"}";
+            string id = "";
+            switch(headset)
+            {
+                case Headset.MONTEREY:
+                    id = "1888816384764129";
+                    break;
+                case Headset.RIFT:
+                    id = "1736210353282450";
+                    break;
+                case Headset.GEARVR:
+                    id = "174868819587665";
+                    break;
+
+            }
+            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":null,\"sectionItemCount\":1500,\"sectionCursor\":null,\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\"}";
             return c;
         }
 
@@ -166,11 +180,4 @@ namespace OculusGraphQLApiLib
         {
             return "access_token=aSecret:)&variables=" + variables + "&doc_id=" + doc_id;
         }
-    }
-
-    public enum Headset
-    {
-        RIFT = 0,
-        MONTEREY = 1 //aka quest
-    }
-}
+    }}

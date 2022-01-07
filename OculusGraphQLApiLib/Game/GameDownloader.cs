@@ -119,6 +119,11 @@ namespace OculusGraphQLApiLib.Game
             return true;
         }
 
+        public static bool DownloadGearVRGame(string destination, string access_token, string binaryId)
+        {
+            return DownloadMontereyGame(destination, access_token, binaryId);
+        }
+
         public static bool DownloadMontereyGame(string destination, string access_token, string binaryId)
         {
             string baseDownloadLink = "https://securecdn.oculus.com/binaries/download/?id=" + binaryId + "&access_token=" + access_token;
