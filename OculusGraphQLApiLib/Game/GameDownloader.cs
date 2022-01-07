@@ -15,6 +15,7 @@ namespace OculusGraphQLApiLib.Game
 {
     public class GameDownloader
     {
+        public static string customManifestError = "";
         private static void Decompress(Stream input, string dest)
         {
             Ionic.Zlib.DeflateStream s = new Ionic.Zlib.DeflateStream(input, Ionic.Zlib.CompressionMode.Decompress);
@@ -91,7 +92,7 @@ namespace OculusGraphQLApiLib.Game
                 Logger.Log("Download of manifest failed. Aborting.", LoggingType.Warning);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine();
-                Console.WriteLine("Download of manifest failed. Do you own this game? If you do then please update your access token in case it's expired");
+                Console.WriteLine("Download of manifest failed. Do you own this game? If you do then check if you selected the right headset. " + customManifestError);
                 Console.ForegroundColor = ConsoleColor.White;
                 return false;
             }
