@@ -109,7 +109,9 @@ namespace OculusGraphQLApiLib
                 case Headset.GEARVR:
                     id = "174868819587665";
                     break;
-
+                case Headset.PACIFIC:
+                    id = "174868819587665";
+                    break;
             }
             c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":null,\"sectionItemCount\":1500,\"sectionCursor\":null,\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\"}";
             return c;

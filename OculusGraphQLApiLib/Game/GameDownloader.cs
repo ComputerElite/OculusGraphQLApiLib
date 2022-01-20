@@ -55,27 +55,35 @@ namespace OculusGraphQLApiLib.Game
             totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
             foreach (KeyValuePair<string, ManifestFile> f in manifest.files)
             {
-                string fileDest = destination + f.Key.Replace('/', Path.DirectorySeparatorChar);
-                if (File.Exists(fileDest)) File.Delete(fileDest);
-                FileManager.CreateDirectoryIfNotExisting(FileManager.GetParentDirIfExisting(destination + f.Key.Replace('/', Path.DirectorySeparatorChar)));
-                foreach (object[] segment in f.Value.segments)
-                {
-                    string url = "https://securecdn.oculus.com/binaries/segment/?access_token=" + access_token + "&binary_id=" + binaryId + "&segment_sha256=" + segment[1];
-                    segmentDownloader.StartDownload(url, "tmp" + Path.DirectorySeparatorChar + "file", true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } });
-                    Stream s = File.OpenRead("tmp" + Path.DirectorySeparatorChar + "file");
-                    s.ReadByte();
-                    s.ReadByte();
-                    Decompress(s, fileDest);
-                    s.Close();
-                    File.Delete("tmp" + Path.DirectorySeparatorChar +  "file");
-                }
 
+                string fileDest = destination + f.Key.Replace('/', Path.DirectorySeparatorChar);
+                DownloadFile(f.Value, fileDest, access_token, binaryId, segmentDownloader);
                 done += new FileInfo(fileDest).Length;
                 totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
                 Console.WriteLine();
             }
             Console.ForegroundColor = ConsoleColor.White;
             return Validator.ValidateGameInstall(destination, manifestPath);
+        }
+
+        public static bool DownloadFile(ManifestFile file, string fileDest, string access_token, string binaryId, DownloadProgressUI downloadProgressUI = null)
+        {
+            if(!Logger.notAllowedStrings.Contains(access_token)) Logger.notAllowedStrings.Add(access_token);
+            if (downloadProgressUI == null) downloadProgressUI = new DownloadProgressUI();
+            if (File.Exists(fileDest)) File.Delete(fileDest);
+            FileManager.CreateDirectoryIfNotExisting(FileManager.GetParentDirIfExisting(fileDest));
+            foreach (object[] segment in file.segments)
+            {
+                string url = "https://securecdn.oculus.com/binaries/segment/?access_token=" + access_token + "&binary_id=" + binaryId + "&segment_sha256=" + segment[1];
+                if (!downloadProgressUI.StartDownload(url, "tmp" + Path.DirectorySeparatorChar + "file", true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } })) return false;
+                Stream s = File.OpenRead("tmp" + Path.DirectorySeparatorChar + "file");
+                s.ReadByte();
+                s.ReadByte();
+                Decompress(s, fileDest);
+                s.Close();
+                File.Delete("tmp" + Path.DirectorySeparatorChar + "file");
+            }
+            return true;
         }
 
         public static bool DownloadManifest(string destination, string access_token, string binaryId)
@@ -120,6 +128,11 @@ namespace OculusGraphQLApiLib.Game
         }
 
         public static bool DownloadGearVRGame(string destination, string access_token, string binaryId)
+        {
+            return DownloadMontereyGame(destination, access_token, binaryId);
+        }
+
+        public static bool DownloadPacificGame(string destination, string access_token, string binaryId)
         {
             return DownloadMontereyGame(destination, access_token, binaryId);
         }
