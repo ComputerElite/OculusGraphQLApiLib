@@ -14,6 +14,10 @@ namespace OculusGraphQLApiLib
         public GraphQLOptions options { get; set; } = new GraphQLOptions();
         public const string oculusUri = "https://graph.oculus.com/graphql";
         public static string oculusStoreToken = "OC|752908224809889|";
+        public static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+        {
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+        };
 
         public GraphQLClient(string uri, GraphQLOptions options)
         {
@@ -82,7 +86,7 @@ namespace OculusGraphQLApiLib
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "1586217024733717";
             c.options.variables = "{\"id\":\"" + appid + "\"}";
-            return JsonSerializer.Deserialize<Data<Application>>(c.Request());
+            return JsonSerializer.Deserialize<Data<Application>>(c.Request(), jsonOptions);
         }
 
         public static ViewerData<OculusUserWrapper> GetCurrentUser()
@@ -90,7 +94,7 @@ namespace OculusGraphQLApiLib
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "4149322231793299";
             c.options.variables = "{}";
-            return JsonSerializer.Deserialize<ViewerData<OculusUserWrapper>>(c.Request());
+            return JsonSerializer.Deserialize<ViewerData<OculusUserWrapper>>(c.Request(), jsonOptions);
         }
 
         public static GraphQLClient AllApps(Headset headset)
@@ -122,7 +126,7 @@ namespace OculusGraphQLApiLib
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "2885322071572384";
             c.options.variables = "{\"applicationID\":\"" + appid + "\"}";
-            return JsonSerializer.Deserialize<Data<NodesPrimaryBinaryApplication>>(c.Request());
+            return JsonSerializer.Deserialize<Data<NodesPrimaryBinaryApplication>>(c.Request(), jsonOptions);
         }
 
         public static Data<EdgesPrimaryBinaryApplication> ReleaseChannelsOfApp(string appid) // DONE
@@ -130,7 +134,7 @@ namespace OculusGraphQLApiLib
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "3828663700542720";
             c.options.variables = "{\"applicationID\":\"" + appid + "\"}";
-            return JsonSerializer.Deserialize<Data<EdgesPrimaryBinaryApplication>>(c.Request());
+            return JsonSerializer.Deserialize<Data<EdgesPrimaryBinaryApplication>>(c.Request(), jsonOptions);
         }
 
         public static Data<ReleaseChannel> ReleaseChannelReleases(string channelId) // DONE
@@ -138,7 +142,7 @@ namespace OculusGraphQLApiLib
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "3973666182694273";
             c.options.variables = "{\"releaseChannelID\":\"" + channelId + "\"}";
-            return JsonSerializer.Deserialize<Data<ReleaseChannel>>(c.Request());
+            return JsonSerializer.Deserialize<Data<ReleaseChannel>>(c.Request(), jsonOptions);
         }
 
         public static ViewerData<ContextualSearch> StoreSearch(string query, Headset headset) // DONE
@@ -146,7 +150,7 @@ namespace OculusGraphQLApiLib
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "3928907833885295";
             c.options.variables = "{\"query\":\"" + query + "\",\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\",\"firstSearchResultItems\":100}";
-            return JsonSerializer.Deserialize<ViewerData<ContextualSearch>>(c.Request());
+            return JsonSerializer.Deserialize<ViewerData<ContextualSearch>>(c.Request(), jsonOptions);
         }
 
         public static GraphQLClient CurrentVersionOfApp(string appid)

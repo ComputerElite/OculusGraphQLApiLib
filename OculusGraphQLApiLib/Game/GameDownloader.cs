@@ -90,6 +90,7 @@ namespace OculusGraphQLApiLib.Game
         {
             string baseDownloadLink = "https://securecdn.oculus.com/binaries/download/?id=" + binaryId + "&access_token=" + access_token;
             FileManager.CreateDirectoryIfNotExisting(FileManager.GetParentDirIfExisting(destination));
+            if (File.Exists(destination)) File.Delete(destination);
             Logger.Log("Downloading manifest of " + binaryId);
             Console.WriteLine("Downloading manifest");
             DownloadProgressUI progressUI = new DownloadProgressUI();

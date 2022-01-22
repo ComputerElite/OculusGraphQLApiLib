@@ -15,7 +15,7 @@ namespace OculusGraphQLApiLib.Results
         public bool is_approved { get; set; } = false;
         public bool is_enterprise_enabled { get; set; } = false;
         public string canonicalName { get; set; } = "";
-        public long release_date { get; set; } = 0;
+        public long? release_date { get; set; } = 0;
         public bool viewer_has_preorder { get; set; } = false;
         public OculusUri cover_landscape_image { get; set; } = new OculusUri();
         public OculusUri cover_portrait_image { get; set; } = new OculusUri();
