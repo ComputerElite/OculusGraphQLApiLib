@@ -145,7 +145,10 @@ namespace OculusGraphQLApiLib.Game
             Console.WriteLine("Starting download of " + binaryId);
             DownloadProgressUI ui = new DownloadProgressUI();
             Logger.notAllowedStrings.Add(access_token);
-            ui.StartDownload(baseDownloadLink, destination, true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } });
+            if(!ui.StartDownload(baseDownloadLink, destination, true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } }))
+            {
+                return false;
+            }
             Logger.Log("Download finished");
             return File.Exists(destination);
         }
