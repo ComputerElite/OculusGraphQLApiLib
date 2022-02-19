@@ -15,6 +15,11 @@ namespace OculusGraphQLApiLib.Results
         {
             return __typename == "Application";
         }
+
+        public bool IsAppStoreAllAppsSection()
+        {
+            return __typename == "AppStoreAllAppsSection";
+        }
     }
 
     public class Data<T>

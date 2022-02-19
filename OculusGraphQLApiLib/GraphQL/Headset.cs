@@ -24,7 +24,9 @@ namespace OculusGraphQLApiLib
                 case Headset.RIFT:
                     return "Rift";
                 case Headset.MONTEREY:
-                    return "Quest";
+                    return "Quest 1";
+                case Headset.HOLLYWOOD:
+                    return "Quest 2";
                 case Headset.GEARVR:
                     return "GearVR";
                 case Headset.PACIFIC:
@@ -40,16 +42,14 @@ namespace OculusGraphQLApiLib
             {
                 case Headset.RIFT:
                     return "Launch";
-                    break;
                 case Headset.MONTEREY:
                     return "Install";
-                    break;
+                case Headset.HOLLYWOOD:
+                    return "Install";
                 case Headset.GEARVR:
                     return "Install";
-                    break;
                 case Headset.PACIFIC:
                     return "Install";
-                    break;
             }
             return "unknown";
         }

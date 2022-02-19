@@ -97,7 +97,7 @@ namespace OculusGraphQLApiLib
             return JsonSerializer.Deserialize<ViewerData<OculusUserWrapper>>(c.Request(), jsonOptions);
         }
 
-        public static GraphQLClient AllApps(Headset headset)
+        public static Data<AppStoreAllAppsSection> AllApps(Headset headset, string cursor = null)
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "3821696797949516";
@@ -117,8 +117,8 @@ namespace OculusGraphQLApiLib
                     id = "174868819587665";
                     break;
             }
-            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":null,\"sectionItemCount\":1500,\"sectionCursor\":null,\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\"}";
-            return c;
+            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":null,\"sectionItemCount\":500,\"sectionCursor\":" + (cursor == null ? "null" : "\"" + cursor + "\"") + ",\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\"}";
+            return JsonSerializer.Deserialize<Data<AppStoreAllAppsSection>>(c.Request());
         }
 
         public static Data<NodesPrimaryBinaryApplication> AllVersionsOfApp(string appid) // DONE
