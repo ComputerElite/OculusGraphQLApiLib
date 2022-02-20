@@ -36,6 +36,25 @@ namespace OculusGraphQLApiLib
             }
         }
 
+        public static string GetHeadsetDisplayNameGeneral(Headset headset)
+        {
+            switch (headset)
+            {
+                case Headset.RIFT:
+                    return "Rift";
+                case Headset.MONTEREY:
+                    return "Quest";
+                case Headset.HOLLYWOOD:
+                    return "Quest";
+                case Headset.GEARVR:
+                    return "GearVR";
+                case Headset.PACIFIC:
+                    return "Go";
+                default:
+                    return "unknown";
+            }
+        }
+
         public static string GetHeadsetInstallActionName(Headset headset)
         {
             switch (headset)
