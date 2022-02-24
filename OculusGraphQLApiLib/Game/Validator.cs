@@ -62,25 +62,35 @@ namespace OculusGraphQLApiLib.Game
                     }
                     continue;
                 }
-                if (BitConverter.ToString(shaCalculator.ComputeHash(File.ReadAllBytes(file))).Replace("-", "").ToLower() != f.Value.sha256.ToLower())
+                try
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Logger.Log("Hash does not match", LoggingType.Warning);
-                    Console.WriteLine("Hash of " + f.Key + " doesn't match with the one in the manifest! " + GetCheckedString(done, total));
-                    if(repair)
+                    if (BitConverter.ToString(shaCalculator.ComputeHash(File.OpenRead(file))).Replace("-", "").ToLower() != f.Value.sha256.ToLower())
                     {
-                        Logger.Log("Redownloading " + f.Key + " to " + file);
-                        if(GameDownloader.DownloadFile(f.Value, file, access_token, binaryId)) valid++;
-                        Console.WriteLine(GetCheckedString(done, total));
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Logger.Log("Hash does not match", LoggingType.Warning);
+                        Console.WriteLine("Hash of " + f.Key + " doesn't match with the one in the manifest! " + GetCheckedString(done, total));
+                        if (repair)
+                        {
+                            Logger.Log("Redownloading " + f.Key + " to " + file);
+                            if (GameDownloader.DownloadFile(f.Value, file, access_token, binaryId)) valid++;
+                            Console.WriteLine(GetCheckedString(done, total));
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Logger.Log("Hash checks out");
+                        Console.WriteLine("Hash checks out. " + GetCheckedString(done, total));
+                        valid++;
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Logger.Log("Hash checks out");
-                    Console.WriteLine("Hash checks out. " + GetCheckedString(done, total));
-                    valid++;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Logger.Log("Hash couldn't be computed", LoggingType.Warning);
+                    Console.WriteLine("Hash of " + f.Key + " is unable to get Computed (" + e.Message + "). " + GetCheckedString(done, total));
                 }
+                
             }
             if (i != valid)
             {
