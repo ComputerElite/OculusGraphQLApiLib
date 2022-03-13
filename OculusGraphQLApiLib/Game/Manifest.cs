@@ -27,17 +27,15 @@ namespace OculusGraphQLApiLib.Game
         public Manifest GetMinimal()
         {
             Manifest mini = this;
-            KeyValuePair<string, ManifestFile> launchFile = new KeyValuePair<string, ManifestFile>();
+            mini.files = new Dictionary<string, ManifestFile>();
             foreach (KeyValuePair<string, ManifestFile> file in this.files)
             {
-                if (file.Key == mini.launchFile)
+                if (file.Key.ToLower().EndsWith(".exe"))
                 {
-                    launchFile = file;
+                    mini.files.Add(file.Key, file.Value);
                     break;
                 }
             }
-            mini.files = new Dictionary<string, ManifestFile>();
-            mini.files.Add(launchFile.Key, launchFile.Value);
             return mini;
         }
     }

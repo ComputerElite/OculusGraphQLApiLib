@@ -31,6 +31,13 @@ namespace OculusGraphQLApiLib.Game
             Console.WriteLine("Validating" + (repair ? " and repairing" : "") + " files of " + gameDirectory);
             Logger.Log("Loading manifest");
             Console.WriteLine("Loading manifest");
+            if(!File.Exists(manifestPath))
+            {
+                Logger.Log(manifestPath + " does not exist. Is the right file passed and does it exist? The game may not be installed.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Manifest couldn't be found, is the game installed?");
+                return false;
+            }
             Manifest manifest = JsonSerializer.Deserialize<Manifest>(File.ReadAllText(manifestPath));
             SHA256 shaCalculator = SHA256.Create();
             int i = 0;
