@@ -12,17 +12,24 @@ namespace OculusGraphQLApiLib
         MONTEREY = 1, // aka quest 1
         HOLLYWOOD = 2, // aka quest 2
         GEARVR = 3,
-        PACIFIC = 4 // aka Go
+        PACIFIC = 4, // aka Go
+        LAGUNA = 5 // Rift S
     }
 
     public class HeadsetTools
     {
+        public static string GetHeadsetCodeName(Headset headset)
+        {
+            return Enum.GetName(typeof(Headset), headset);
+        }
         public static string GetHeadsetDisplayName(Headset headset)
         {
             switch (headset)
             {
                 case Headset.RIFT:
                     return "Rift";
+                case Headset.LAGUNA:
+                    return "Rift S";
                 case Headset.MONTEREY:
                     return "Quest 1";
                 case Headset.HOLLYWOOD:
@@ -42,6 +49,8 @@ namespace OculusGraphQLApiLib
             {
                 case Headset.RIFT:
                     return "Rift";
+                case Headset.LAGUNA:
+                    return "Rift";
                 case Headset.MONTEREY:
                     return "Quest";
                 case Headset.HOLLYWOOD:
@@ -60,6 +69,8 @@ namespace OculusGraphQLApiLib
             switch (headset)
             {
                 case Headset.RIFT:
+                    return "Launch";
+                case Headset.LAGUNA:
                     return "Launch";
                 case Headset.MONTEREY:
                     return "Install";

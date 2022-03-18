@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text.Json;
+using System.Web;
 using ComputerUtils.Logging;
 using OculusGraphQLApiLib.Results;
 
@@ -14,6 +15,7 @@ namespace OculusGraphQLApiLib
         public GraphQLOptions options { get; set; } = new GraphQLOptions();
         public const string oculusUri = "https://graph.oculus.com/graphql";
         public static string oculusStoreToken = "OC|752908224809889|";
+        public static string forcedLocale = "";
         public static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
@@ -32,6 +34,11 @@ namespace OculusGraphQLApiLib
 
         public GraphQLClient() { }
 
+        public string GetForcedLocale()
+        {
+            return forcedLocale != "" ? "?forced_locale=" + forcedLocale : "";
+        }
+
         public string Request(GraphQLOptions options)
         {
             WebClient c = new WebClient();
@@ -39,7 +46,7 @@ namespace OculusGraphQLApiLib
             Logger.Log("Doing POST Request to " + uri + " with args " + options.ToLoggingString());
             try
             {
-                string returning = c.UploadString(uri, "POST", options.ToString());
+                string returning = c.UploadString(uri + GetForcedLocale(), "POST", options.ToStringEncoded());
                 return returning;
             }
             catch (WebException e)
@@ -55,7 +62,6 @@ namespace OculusGraphQLApiLib
         public string Request(bool asBody = false, Dictionary<string, string> customHeaders = null)
         {
             WebClient c = new WebClient();
-            //c.Headers.Add("x-requested-with", "RiftDowngrader");
             if (customHeaders != null)
             {
                 foreach (KeyValuePair<string, string> header in customHeaders)
@@ -68,9 +74,9 @@ namespace OculusGraphQLApiLib
             {
                 if (asBody)
                 {
-                    return c.UploadString(uri, "POST", this.options.ToString());
+                    return c.UploadString(uri + GetForcedLocale(), "POST", options.ToStringEncoded());
                 }
-                return c.UploadString(uri + "?" + this.options.ToString(), "POST", "");
+                return c.UploadString(uri + "?" + this.options.ToString() + GetForcedLocale().Replace("?", "&"), "POST", "");
             }
             catch (WebException e)
             {
@@ -117,7 +123,7 @@ namespace OculusGraphQLApiLib
                     id = "174868819587665";
                     break;
             }
-            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":null,\"sectionItemCount\":500,\"sectionCursor\":" + (cursor == null ? "null" : "\"" + cursor + "\"") + ",\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\"}";
+            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":null,\"sectionItemCount\":500,\"sectionCursor\":" + (cursor == null ? "null" : "\"" + cursor + "\"") + ",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\"}";
             return JsonSerializer.Deserialize<Data<AppStoreAllAppsSection>>(c.Request());
         }
 
@@ -149,7 +155,7 @@ namespace OculusGraphQLApiLib
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "3928907833885295";
-            c.options.variables = "{\"query\":\"" + query + "\",\"hmdType\":\"" + Enum.GetName(typeof(Headset), headset) + "\",\"firstSearchResultItems\":100}";
+            c.options.variables = "{\"query\":\"" + query + "\",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\",\"firstSearchResultItems\":100}";
             return JsonSerializer.Deserialize<ViewerData<ContextualSearch>>(c.Request(), jsonOptions);
         }
 
@@ -159,6 +165,22 @@ namespace OculusGraphQLApiLib
             c.options.doc_id = "1586217024733717";
             c.options.variables = "{\"id\":\"" + appid + "\"}";
             return c;
+        }
+
+        public static Data<Application> GetAppDetail(string id, Headset headset)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "4282918028433524";
+            c.options.variables = "{\"itemId\":\"" + id + "\",\"first\":20,\"last\":null,\"after\":null,\"before\":null,\"forward\":true,\"ordering\":null,\"ratingScores\":null,\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\"}";
+            return JsonSerializer.Deserialize<Data<Application>>(c.Request(), jsonOptions);
+        }
+
+        public static Data<Application> GetDLCs(string appId)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "3853229151363174";
+            c.options.variables = "{\"id\":\"" + appId + "\",\"first\":200,\"last\":null,\"after\":null,\"before\":null,\"forward\":true}";
+            return JsonSerializer.Deserialize<Data<Application>>(c.Request(), jsonOptions);
         }
 
         public static GraphQLClient OculusTemplate()
@@ -180,6 +202,11 @@ namespace OculusGraphQLApiLib
         public override string ToString()
         {
             return "access_token=" + access_token + "&variables=" + variables + "&doc_id=" + doc_id;
+        }
+
+        public string ToStringEncoded()
+        {
+            return "access_token=" + HttpUtility.UrlEncode(access_token) + "&variables=" + HttpUtility.UrlEncode(variables) + "&doc_id=" + doc_id;
         }
 
         public string ToLoggingString()

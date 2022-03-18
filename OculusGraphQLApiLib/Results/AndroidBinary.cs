@@ -10,7 +10,12 @@ namespace OculusGraphQLApiLib.Results
         public string change_log { get { return changeLog; } set { changeLog = value; } }
         public string changeLog { get; set; } = "";
         public string richChangeLog { get; set; } = "";
-        public EdgesPrimaryBinaryApplication binary_application { get; set; } = new EdgesPrimaryBinaryApplication();
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// WARNING!!! IN CASE SOMETHING DOESN'T WORK SOMEWHERE ADD binary_application BACK IN AND FIX RECURSION ///
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //public EdgesPrimaryBinaryApplication binary_application { get; set; } = new EdgesPrimaryBinaryApplication();
         public string __isAppBinary { get; set; } = "";
         //public Edges<AssetFile> asset_files { get; set; } = ;
         //public Edges<DebugSymbol> debug_symbols { get; set; } = ;
@@ -19,6 +24,8 @@ namespace OculusGraphQLApiLib.Results
         public long versionCode { get; set; } = 0;
         public long created_date { get; set; } = 0;
         public Nodes<ReleaseChannel> binary_release_channels { get; set; } = null;
+        public Edges<Node<AppItemBundle>> lastIapItems { get; set; } = new Edges<Node<AppItemBundle>>();
+        public Edges<Node<AppItemBundle>> firstIapItems { get; set; } = new Edges<Node<AppItemBundle>>();
 
         public override string ToString()
         {

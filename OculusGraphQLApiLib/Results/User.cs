@@ -6,7 +6,8 @@
     }
     public class OculusUser
     {
-        public string alias { get; set; } = "";
+        public string alias { get { return display_name; } set { display_name = value; } }
+        public string display_name { get; set; } = "";
         public OculusUri profile_photo { get;set; } = new OculusUri();
         public string id { get; set; } = "";
     }

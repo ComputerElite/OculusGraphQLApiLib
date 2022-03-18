@@ -27,6 +27,13 @@ namespace OculusGraphQLApiLib
             Console.WriteLine(Serialize<Data<ReleaseChannel>>(GraphQLClient.ReleaseChannelReleases(releasechannelid)));
             Stop();
         }
+
+        public static void DLCs()
+        {
+            Start();
+            Console.WriteLine(Serialize<Data<Application>>(GraphQLClient.GetDLCs(appid)));
+            Stop();
+        }
         public static void ReleaseChannelsOfApp()
         {
             Start();

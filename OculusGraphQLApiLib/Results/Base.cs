@@ -20,6 +20,16 @@ namespace OculusGraphQLApiLib.Results
         {
             return __typename == "AppStoreAllAppsSection";
         }
+
+        public bool IsAppItemBundle()
+        {
+            return __typename == "AppItemBundle";
+        }
+
+        public bool IsIAPItem()
+        {
+            return __typename == "IAPItem";
+        }
     }
 
     public class Data<T>
@@ -50,6 +60,13 @@ namespace OculusGraphQLApiLib.Results
     {
         public long count { get; set; } = 0;
         public List<T> edges { get; set; } = new List<T>();
+        public PageInfo page_info { get; set; } = new PageInfo();
+    }
+
+    public class PageInfo
+    {
+        public string end_cursor { get; set; } = "";
+        public string start_cursor { get; set; } = "";
     }
 
     public class Node<T>
