@@ -11,6 +11,8 @@ namespace OculusGraphQLApiLib.Results
         public long end_time { get; set; } = 0;
         public string id { get; set; } = "";
         public bool show_timer { get; set; } = false;
+        public AppStoreOfferPrice price { get; set; } = new AppStoreOfferPrice();
+        public AppStoreOfferPrice strikethrough_price { get; set; } = new AppStoreOfferPrice();
     }
 
     public class AppStoreOfferPrice
