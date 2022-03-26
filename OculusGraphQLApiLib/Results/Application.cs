@@ -33,13 +33,13 @@ namespace OculusGraphQLApiLib.Results
         public Nodes<Revision> revisions { get; set; } = new Nodes<Revision>();
         public List<OculusUri> screenshots { get; set; } = new List<OculusUri>();
         public Edges<Node<AndroidBinary>> supportedBinaries { get; set; } = new Edges<Node<AndroidBinary>>();
-        public List<string> supported_hmd_types { get; set; } = new List<string>();
-        public List<Headset> supported_hmd_types_enum
+        public List<string> supported_hmd_platforms { get; set; } = new List<string>();
+        public List<Headset> supported_hmd_platforms_enum
         {
             get
             {
                 List<Headset> headsets = new List<Headset>();
-                foreach (string s in supported_hmd_types)
+                foreach (string s in supported_hmd_platforms)
                 {
                     headsets.Add((Headset)Enum.Parse(typeof(Headset), s));
                 }

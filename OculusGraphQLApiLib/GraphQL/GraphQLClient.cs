@@ -16,6 +16,8 @@ namespace OculusGraphQLApiLib
         public const string oculusUri = "https://graph.oculus.com/graphql";
         public static string oculusStoreToken = "OC|752908224809889|";
         public static string forcedLocale = "";
+        public static bool throwException = true;
+        public static int retryTimes = 3;
         public static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
@@ -54,13 +56,22 @@ namespace OculusGraphQLApiLib
                 Logger.Log("Request failed (" + e.Status + "): \n" + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Request to Oculus failed. Please try again later and/or contact ComputerElite.");
-                throw new Exception(e.Status.ToString().StartsWith("4") ? "I fuqed up" : "Some Request to Oculus failed so yeah idk how to handle it.");
+                if(throwException) throw new Exception(e.Status.ToString().StartsWith("4") ? "I fuqed up" : "Some Request to Oculus failed so yeah idk how to handle it.");
             }
-
+            return "{}";
         }
 
-        public string Request(bool asBody = false, Dictionary<string, string> customHeaders = null)
+        public string Request(bool asBody = false, Dictionary<string, string> customHeaders = null, int retry = 0, string status = "200")
         {
+            if (retry == retryTimes)
+            {
+                Logger.Log("Retry limit exceeded. Stopping requests");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Request to Oculus failed. Please try again later and/or contact ComputerElite.");
+                if (throwException) throw new Exception(status.StartsWith("4") ? "I fuqed up" : "Some Request to Oculus failed so yeah idk how to handle it.");
+                return "{}";
+            }
+            if(retry != 0) Logger.Log("Starting retry number " + retry);
             WebClient c = new WebClient();
             if (customHeaders != null)
             {
@@ -80,11 +91,11 @@ namespace OculusGraphQLApiLib
             }
             catch (WebException e)
             {
-                Logger.Log("Request failed (" + e.Status + "): \n" + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Request to Oculus failed. Please try again later and/or contact ComputerElite.");
-                throw new Exception(e.Status.ToString().StartsWith("4") ? "I fuqed up" : "Some Request to Oculus failed so yeah idk how to handle it.");
+                
+                Logger.Log("Request failed, retrying (" + e.Status.ToString() + "): \n");// + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
+                return Request(asBody, customHeaders, retry + 1, e.Status.ToString());
             }
+            return "{}";
         }
 
         public static Data<Application> VersionHistory(string appid)
@@ -103,7 +114,7 @@ namespace OculusGraphQLApiLib
             return JsonSerializer.Deserialize<ViewerData<OculusUserWrapper>>(c.Request(), jsonOptions);
         }
 
-        public static Data<AppStoreAllAppsSection> AllApps(Headset headset, string cursor = null)
+        public static Data<AppStoreAllAppsSection> AllApps(Headset headset, string cursor = null, int maxApps = 500)
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "3821696797949516";
@@ -123,7 +134,7 @@ namespace OculusGraphQLApiLib
                     id = "174868819587665";
                     break;
             }
-            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":null,\"sectionItemCount\":500,\"sectionCursor\":" + (cursor == null ? "null" : "\"" + cursor + "\"") + ",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\"}";
+            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":null,\"sectionItemCount\":" + maxApps + ",\"sectionCursor\":" + (cursor == null ? "null" : "\"" + cursor + "\"") + ",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\"}";
             return JsonSerializer.Deserialize<Data<AppStoreAllAppsSection>>(c.Request());
         }
 

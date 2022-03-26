@@ -10,5 +10,7 @@ namespace OculusGraphQLApiLib.Results
     {
         public string id { get; set; } = "";
         public string canonicalName { get; set; } = "";
+        public string displayName { get; set; } = "";
+        public Headset hmd { get; set; } = Headset.RIFT;
     }
 }

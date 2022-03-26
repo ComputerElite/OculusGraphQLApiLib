@@ -8,6 +8,7 @@ namespace OculusGraphQLApiLib
 {
     public enum Headset
     {
+        INVALID = -1,
         RIFT = 0,
         MONTEREY = 1, // aka quest 1
         HOLLYWOOD = 2, // aka quest 2
@@ -18,6 +19,26 @@ namespace OculusGraphQLApiLib
 
     public class HeadsetTools
     {
+        public static Headset GetHeadsetFromCodeName(string codename)
+        {
+            switch(codename)
+            {
+                case "MONTEREY":
+                    return Headset.MONTEREY;
+                case "RIFT":
+                    return Headset.RIFT;
+                case "HOLLYWOOD":
+                    return Headset.HOLLYWOOD;
+                case "GEARVR":
+                    return Headset.GEARVR;
+                case "PACIFIC":
+                    return Headset.PACIFIC;
+                case "LAGUNA":
+                    return Headset.LAGUNA;
+            }
+            return Headset.INVALID;
+        }
+
         public static string GetHeadsetCodeName(Headset headset)
         {
             return Enum.GetName(typeof(Headset), headset);
