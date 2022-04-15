@@ -17,6 +17,7 @@ namespace OculusGraphQLApiLib
         public static string oculusStoreToken = "OC|752908224809889|";
         public static string forcedLocale = "";
         public static bool throwException = true;
+        public static bool log = true;
         public static int retryTimes = 3;
         public static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
@@ -45,7 +46,7 @@ namespace OculusGraphQLApiLib
         {
             WebClient c = new WebClient();
             //c.Headers.Add("x-requested-with", "RiftDowngrader");
-            Logger.Log("Doing POST Request to " + uri + " with args " + options.ToLoggingString());
+            if (log) Logger.Log("Doing POST Request to " + uri + " with args " + options.ToLoggingString());
             try
             {
                 string returning = c.UploadString(uri + GetForcedLocale(), "POST", options.ToStringEncoded());
@@ -53,9 +54,9 @@ namespace OculusGraphQLApiLib
             }
             catch (WebException e)
             {
-                Logger.Log("Request failed (" + e.Status + "): \n" + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
+                if (log) Logger.Log("Request failed (" + e.Status + "): \n" + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Request to Oculus failed. Please try again later and/or contact ComputerElite.");
+                if(log) Console.WriteLine("Request to Oculus failed. Please try again later and/or contact ComputerElite.");
                 if(throwException) throw new Exception(e.Status.ToString().StartsWith("4") ? "I fuqed up" : "Some Request to Oculus failed so yeah idk how to handle it.");
             }
             return "{}";
@@ -65,13 +66,13 @@ namespace OculusGraphQLApiLib
         {
             if (retry == retryTimes)
             {
-                Logger.Log("Retry limit exceeded. Stopping requests");
+                if (log) Logger.Log("Retry limit exceeded. Stopping requests");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Request to Oculus failed. Please try again later and/or contact ComputerElite.");
+                if (log) Console.WriteLine("Request to Oculus failed. Please try again later and/or contact ComputerElite.");
                 if (throwException) throw new Exception(status.StartsWith("4") ? "I fuqed up" : "Some Request to Oculus failed so yeah idk how to handle it.");
                 return "{}";
             }
-            if(retry != 0) Logger.Log("Starting retry number " + retry);
+            if(log && retry != 0) Logger.Log("Starting retry number " + retry);
             WebClient c = new WebClient();
             if (customHeaders != null)
             {
@@ -80,7 +81,7 @@ namespace OculusGraphQLApiLib
                     c.Headers.Add(header.Key, header.Value);
                 }
             }
-            Logger.Log("Doing POST Request to " + uri + " with args " + options.ToLoggingString());
+            if (log) Logger.Log("Doing POST Request to " + uri + " with args " + options.ToLoggingString());
             try
             {
                 if (asBody)
@@ -91,8 +92,8 @@ namespace OculusGraphQLApiLib
             }
             catch (WebException e)
             {
-                
-                Logger.Log("Request failed, retrying (" + e.Status.ToString() + "): \n");// + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
+
+                if (log) Logger.Log("Request failed, retrying (" + e.Status.ToString() + "): \n");// + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
                 return Request(asBody, customHeaders, retry + 1, e.Status.ToString());
             }
             return "{}";

@@ -14,7 +14,7 @@ namespace OculusGraphQLApiLib
         HOLLYWOOD = 2, // aka quest 2
         GEARVR = 3,
         PACIFIC = 4, // aka Go
-        LAGUNA = 5 // Rift S
+        LAGUNA = 5 // aka Rift S
     }
 
     public class HeadsetTools
