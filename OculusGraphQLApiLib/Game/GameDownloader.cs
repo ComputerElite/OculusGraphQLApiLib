@@ -101,7 +101,7 @@ namespace OculusGraphQLApiLib.Game
                 Logger.Log("Download of manifest failed. Aborting.", LoggingType.Warning);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine();
-                Console.WriteLine("Download of manifest failed.\n\nDo you own this game?\n\n-If you do, check if you got the right headset selected in the main menu.\n- If that's the case update your access_token in case it's expired.\n\n" + customManifestError);
+                Console.WriteLine("Download of manifest failed.\n\nDo you own this game?\n\n-If you do, check if you got the right headset selected in the main menu.\n- If that's the case update your access_token in case it's expired.\n\n " + customManifestError);
                 Console.ForegroundColor = ConsoleColor.White;
                 return false;
             }
