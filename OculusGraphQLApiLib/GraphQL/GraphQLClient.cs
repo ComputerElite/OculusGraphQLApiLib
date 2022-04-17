@@ -125,7 +125,13 @@ namespace OculusGraphQLApiLib
                 case Headset.MONTEREY:
                     id = "1888816384764129";
                     break;
+                case Headset.HOLLYWOOD:
+                    id = "1888816384764129";
+                    break;
                 case Headset.RIFT:
+                    id = "1736210353282450";
+                    break;
+                case Headset.LAGUNA:
                     id = "1736210353282450";
                     break;
                 case Headset.GEARVR:

@@ -14,7 +14,8 @@ namespace OculusGraphQLApiLib
         HOLLYWOOD = 2, // aka quest 2
         GEARVR = 3,
         PACIFIC = 4, // aka Go
-        LAGUNA = 5 // aka Rift S
+        LAGUNA = 5, // aka Rift S
+        SEACLIFF = 6
     }
 
     public class HeadsetTools
@@ -35,6 +36,8 @@ namespace OculusGraphQLApiLib
                     return Headset.PACIFIC;
                 case "LAGUNA":
                     return Headset.LAGUNA;
+                case "SEACLIFF":
+                    return Headset.SEACLIFF;
             }
             return Headset.INVALID;
         }
@@ -59,6 +62,8 @@ namespace OculusGraphQLApiLib
                     return "GearVR";
                 case Headset.PACIFIC:
                     return "Go";
+                case Headset.SEACLIFF:
+                    return "Seacliff";
                 default:
                     return "unknown";
             }
@@ -80,6 +85,8 @@ namespace OculusGraphQLApiLib
                     return "GearVR";
                 case Headset.PACIFIC:
                     return "Go";
+                case Headset.SEACLIFF:
+                    return "Seacliff";
                 default:
                     return "unknown";
             }
@@ -100,6 +107,8 @@ namespace OculusGraphQLApiLib
                 case Headset.GEARVR:
                     return "Install";
                 case Headset.PACIFIC:
+                    return "Install";
+                case Headset.SEACLIFF:
                     return "Install";
             }
             return "unknown";
