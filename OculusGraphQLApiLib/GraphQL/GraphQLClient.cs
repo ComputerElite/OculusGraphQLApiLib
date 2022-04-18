@@ -153,6 +153,14 @@ namespace OculusGraphQLApiLib
             return JsonSerializer.Deserialize<Data<NodesPrimaryBinaryApplication>>(c.Request(), jsonOptions);
         }
 
+        public static ViewerData<OculusUserWrapper> GetActiveEntitelments() // DONE
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "4850747515044496";
+            c.options.variables = "{}";
+            return JsonSerializer.Deserialize<ViewerData<OculusUserWrapper>>(c.Request(), jsonOptions);
+        }
+
         public static Data<EdgesPrimaryBinaryApplication> ReleaseChannelsOfApp(string appid) // DONE
         {
             GraphQLClient c = OculusTemplate();

@@ -49,6 +49,8 @@ namespace OculusGraphQLApiLib.Results
         public bool viewer_has_preorder { get; set; } = false;
         public string website_url { get; set; } = "";
         public AndroidBinary latest_supported_binary { get; set; } = new AndroidBinary();
+
+        public List<IAPEntitlement> active_dlc_entitlements { get; set; } = new List<IAPEntitlement>();
     }
     public class EdgesPrimaryBinaryApplication : Application
     {
