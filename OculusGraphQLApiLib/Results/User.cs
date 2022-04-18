@@ -12,6 +12,6 @@ namespace OculusGraphQLApiLib.Results
         public string display_name { get; set; } = "";
         public OculusUri profile_photo { get;set; } = new OculusUri();
         public string id { get; set; } = "";
-        public List<Entitlement> active_entitlements { get; set; } = new List<Entitlement>();
+        public Nodes<Entitlement> active_entitlements { get; set; } = new Nodes<Entitlement>();
     }
 }
