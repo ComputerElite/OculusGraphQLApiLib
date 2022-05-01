@@ -75,13 +75,13 @@ namespace OculusGraphQLApiLib.Game
             foreach (object[] segment in file.segments)
             {
                 string url = "https://securecdn.oculus.com/binaries/segment/?access_token=" + access_token + "&binary_id=" + binaryId + "&segment_sha256=" + segment[1];
-                if (!downloadProgressUI.StartDownload(url, "tmp" + Path.DirectorySeparatorChar + "file", true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } })) return false;
-                Stream s = File.OpenRead("tmp" + Path.DirectorySeparatorChar + "file");
+                if (!downloadProgressUI.StartDownload(url, AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file", true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } })) return false;
+                Stream s = File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");
                 s.ReadByte();
                 s.ReadByte();
                 Decompress(s, fileDest);
                 s.Close();
-                File.Delete("tmp" + Path.DirectorySeparatorChar + "file");
+                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");
             }
             return true;
         }
