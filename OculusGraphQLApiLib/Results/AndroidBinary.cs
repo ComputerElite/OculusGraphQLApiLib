@@ -9,6 +9,7 @@ namespace OculusGraphQLApiLib.Results
         public string id { get; set; } = "";
         public string version { get; set; } = "";
         public string platform { get; set; } = "";
+        public string package_name { get; set; } = null;
         public string file_name { get; set; } = "";
         public string uri { get; set; } = "";
         public string change_log { get { return changeLog; } set { changeLog = value; } }
@@ -65,6 +66,7 @@ namespace OculusGraphQLApiLib.Results
         public Nodes<ReleaseChannel> binary_release_channels { get; set; } = null;
         public Edges<Node<AppItemBundle>> lastIapItems { get; set; } = new Edges<Node<AppItemBundle>>();
         public Edges<Node<AppItemBundle>> firstIapItems { get; set; } = new Edges<Node<AppItemBundle>>();
+        public Edges<Node<AssetFile>> asset_files { get; set; } = new Edges<Node<AssetFile>>();
 
         public override string ToString()
         {

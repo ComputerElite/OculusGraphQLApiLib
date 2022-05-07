@@ -38,6 +38,12 @@ namespace OculusGraphQLApiLib.Results
         public List<Error> errors { get; set; } = new List<Error>();
     }
 
+    public class PlainData<T>
+    {
+        public T data { get; set; } = default(T);
+        public List<Error> errors { get; set; } = new List<Error>();
+    }
+
     public class ViewerData<T>
     {
         public Viewer<T> data { get; set; } = new Viewer<T>();

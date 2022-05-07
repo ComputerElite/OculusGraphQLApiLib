@@ -217,6 +217,14 @@ namespace OculusGraphQLApiLib
             return JsonSerializer.Deserialize<Data<AndroidBinary>>(c.Request(), jsonOptions);
         }
 
+        public static PlainData<AppBinaryInfoContainer> GetAssetFiles(string appId, long versionCode)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc = "query ($params: AppBinaryInfoArgs!) { app_binary_info(args: $params) { info { binary { ... on AndroidBinary { id package_name version_code asset_files { edges { node { ... on AssetFile {  file_name uri size  } } } } } } } }}";
+            c.options.variables = "{\"params\":{\"app_params\":[{\"app_id\":\"" + appId + "\",\"version_code\":\"" + versionCode + "\"}]}}";
+            return JsonSerializer.Deserialize<PlainData<AppBinaryInfoContainer>>(c.Request(), jsonOptions);
+        }
+
         public static GraphQLClient OculusTemplate()
         {
             GraphQLClient c = new GraphQLClient(oculusUri);
@@ -232,19 +240,20 @@ namespace OculusGraphQLApiLib
         public string access_token { get; set; } = "";
         public string variables { get; set; } = "";
         public string doc_id { get; set; } = "";
+        public string doc { get; set; } = "";
 
         public override string ToString()
         {
-            return "access_token=" + access_token + "&variables=" + variables + "&doc_id=" + doc_id;
+            return "access_token=" + access_token + "&variables=" + variables + "&doc_id=" + doc_id + "&doc=" + doc;
         }
 
         public string ToStringEncoded()
         {
-            return "access_token=" + HttpUtility.UrlEncode(access_token) + "&variables=" + HttpUtility.UrlEncode(variables) + "&doc_id=" + doc_id;
+            return "access_token=" + HttpUtility.UrlEncode(access_token) + "&variables=" + HttpUtility.UrlEncode(variables) + "&doc_id=" + doc_id + "&doc=" + HttpUtility.UrlEncode(doc);
         }
 
         public string ToLoggingString()
         {
-            return "access_token=aSecret:)&variables=" + variables + "&doc_id=" + doc_id;
+            return "access_token=aSecret:)&variables=" + variables + "&doc_id=" + doc_id + "&doc=" + doc;
         }
     }}
