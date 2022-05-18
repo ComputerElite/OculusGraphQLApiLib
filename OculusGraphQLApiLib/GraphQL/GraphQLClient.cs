@@ -84,16 +84,16 @@ namespace OculusGraphQLApiLib
             if (log) Logger.Log("Doing POST Request to " + uri + " with args " + options.ToLoggingString());
             try
             {
-                if (asBody)
-                {
-                    return c.UploadString(uri + GetForcedLocale(), "POST", options.ToStringEncoded());
-                }
-                return c.UploadString(uri + "?" + this.options.ToString() + GetForcedLocale().Replace("?", "&"), "POST", "");
+                string res = "";
+                if (asBody) res = c.UploadString(uri + GetForcedLocale(), "POST", options.ToStringEncoded());
+                else res = c.UploadString(uri + "?" + this.options.ToString() + GetForcedLocale().Replace("?", "&"), "POST", "");
+                if(log) Logger.Log(res);
+                return res;
             }
             catch (WebException e)
             {
 
-                if (log) Logger.Log("Request failed, retrying (" + e.Status.ToString() + "): \n");// + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
+                if (log) Logger.Log("Request failed, retrying (" + e.Status.ToString() + ", " + (int)e.Status + "): \n" + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
                 return Request(asBody, customHeaders, retry + 1, e.Status.ToString());
             }
             return "{}";
