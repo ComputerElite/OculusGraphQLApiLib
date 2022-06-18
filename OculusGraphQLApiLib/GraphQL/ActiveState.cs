@@ -16,6 +16,10 @@ namespace OculusGraphQLApiLib.GraphQL
         UNKNOWN,
         PAID_OFFER,
         NUX,
+        OCULUS_KEYS,
+        DEVELOPER,
+        NUX_BUNDLE,
+        XBUY,
         RELEASE_CHANNEL_OFFER
     }
 }
