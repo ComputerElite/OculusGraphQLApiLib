@@ -67,6 +67,7 @@ namespace OculusGraphQLApiLib.Results
         public Edges<Node<AppItemBundle>> lastIapItems { get; set; } = new Edges<Node<AppItemBundle>>();
         public Edges<Node<AppItemBundle>> firstIapItems { get; set; } = new Edges<Node<AppItemBundle>>();
         public Edges<Node<AssetFile>> asset_files { get; set; } = new Edges<Node<AssetFile>>();
+        public AssetFile obb_binary { get; set; } = null;
 
         public override string ToString()
         {

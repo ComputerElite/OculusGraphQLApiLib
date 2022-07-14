@@ -18,6 +18,10 @@ namespace OculusGraphQLApiLib.Results
             {
                 return long.Parse(size);
             }
+            set
+            {
+                sizeNumerical = long.Parse(size);
+            }
         }
     }
 }
