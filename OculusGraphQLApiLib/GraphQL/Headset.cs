@@ -15,7 +15,7 @@ namespace OculusGraphQLApiLib
         GEARVR = 3,
         PACIFIC = 4, // aka Go
         LAGUNA = 5, // aka Rift S
-        SEACLIFF = 6
+        SEACLIFF = 6 // aka Quest Pro
     }
 
     public class HeadsetTools
@@ -63,7 +63,7 @@ namespace OculusGraphQLApiLib
                 case Headset.PACIFIC:
                     return "Go";
                 case Headset.SEACLIFF:
-                    return "Seacliff";
+                    return "Quest Pro";
                 default:
                     return "unknown";
             }
@@ -86,7 +86,7 @@ namespace OculusGraphQLApiLib
                 case Headset.PACIFIC:
                     return "Go";
                 case Headset.SEACLIFF:
-                    return "Seacliff";
+                    return "Quest";
                 default:
                     return "unknown";
             }

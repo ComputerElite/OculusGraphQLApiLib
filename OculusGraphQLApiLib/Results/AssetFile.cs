@@ -12,6 +12,7 @@ namespace OculusGraphQLApiLib.Results
         public string uri { get; set; } = "";
         public string size { get; set; } = "0";
         public string id { get; set; } = "";
+        public bool is_required { get; set; } = false;
         public long sizeNumerical
         {
             get
@@ -20,7 +21,7 @@ namespace OculusGraphQLApiLib.Results
             }
             set
             {
-                sizeNumerical = long.Parse(size);
+                return;
             }
         }
     }
