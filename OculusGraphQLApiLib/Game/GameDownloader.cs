@@ -57,6 +57,7 @@ namespace OculusGraphQLApiLib.Game
             {
 
                 string fileDest = destination + f.Key.Replace('/', Path.DirectorySeparatorChar);
+                Console.WriteLine();
                 DownloadFile(f.Value, fileDest, access_token, binaryId, segmentDownloader);
                 done += new FileInfo(fileDest).Length;
                 totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
@@ -152,5 +153,42 @@ namespace OculusGraphQLApiLib.Game
             Logger.Log("Download finished");
             return File.Exists(destination);
         }
+
+        public static bool DownloadObbFiles(string destinationDir, string access_token, List<Obb> obbs)
+        {
+            Logger.Log("Downloading " + obbs.Count + " obb files");
+            FileManager.CreateDirectoryIfNotExisting(destinationDir);
+            ProgressBarUI totalProgress = new ProgressBarUI();
+            totalProgress.Start();
+            totalProgress.eTARange = 20;
+            DownloadProgressUI segmentDownloader = new DownloadProgressUI();
+            FileManager.RecreateDirectoryIfExisting("tmp");
+            long done = 0;
+            long doneFiles = 0;
+            Logger.notAllowedStrings.Add(access_token);
+            long total = 0;
+            long totalFiles = 0;
+            foreach (Obb f in obbs) total += f.bytes;
+            totalFiles = obbs.Count;
+            List<KeyValuePair<DateTime, long>> lastBytes = new List<KeyValuePair<DateTime, long>>();
+            totalProgress.UpdateProgress(done, total, doneFiles + " files (" + SizeConverter.ByteSizeToString(done) + ")", totalFiles + " files (" + SizeConverter.ByteSizeToString(total) + ")", "", true);
+            foreach (Obb f in obbs)
+            {
+                string fileDest = destinationDir + f.filename;
+                Console.WriteLine();
+                segmentDownloader.StartDownload("https://securecdn.oculus.com/binaries/download/?id=" + f.id + "&access_token=" + access_token, fileDest, true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } });
+                done += new FileInfo(fileDest).Length;
+                doneFiles++;
+                totalProgress.UpdateProgress(done, total, doneFiles + " files (" + SizeConverter.ByteSizeToString(done) + ")", totalFiles + " files (" + SizeConverter.ByteSizeToString(total) + ")", "", true);
+            }
+            return true;
+        }
+    }
+
+    public class Obb
+    {
+        public string id { get; set; } = "";
+        public string filename { get; set; } = "";
+        public long bytes { get; set; } = 0;
     }
 }
