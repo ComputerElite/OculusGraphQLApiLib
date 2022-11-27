@@ -20,6 +20,24 @@ namespace OculusGraphQLApiLib
 
     public class HeadsetTools
     {
+		public static Headset GetHeadsetFromOculusLink(string link, Headset fallback)
+        {
+			if (link.Split('/').Length < 5) return fallback;
+			switch (link.Split('/')[4])
+            {
+                case "quest":
+                    return Headset.HOLLYWOOD;
+                case "rift":
+                    return Headset.RIFT;
+                case "go":
+                    return Headset.PACIFIC;
+                case "gearvr":
+                    return Headset.GEARVR;
+            }
+            return fallback;
+
+		}
+
         public static Headset GetHeadsetFromCodeName(string codename)
         {
             switch(codename)
