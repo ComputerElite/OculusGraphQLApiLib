@@ -55,9 +55,9 @@ namespace OculusGraphQLApiLib.Game
                 i++;
                 if (!File.Exists(file))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Logger.Log("File does not exist", LoggingType.Warning);
-                    Console.WriteLine("File does not exist");
+                    Console.WriteLine("File does not exist. Downloading");
                     if (repair)
                     {
                         Logger.Log("Redownloading " + f.Key + " to " + file);
