@@ -115,7 +115,15 @@ namespace OculusGraphQLApiLib
             return JsonSerializer.Deserialize<ViewerData<OculusUserWrapper>>(c.Request(), jsonOptions);
         }
 
-        public static Data<AppStoreAllAppsSection> AllApps(Headset headset, string cursor = null, int maxApps = 500)
+		public static ReleaseChannelSettingWrapper ChangeSelectedReleaseChannel(string appId, string releaseChannelId)
+		{
+			GraphQLClient c = OculusTemplate();
+			c.options.doc_id = "5380372352071467";
+			c.options.variables = "{\"input\":{\"client_mutation_id\":\"2\",\"app_id\":\"" + appId + "\",\"release_channel_id\":\"" + releaseChannelId + "\"}}";
+			return JsonSerializer.Deserialize<ReleaseChannelSettingWrapper>(c.Request(), jsonOptions);
+		}
+
+		public static Data<AppStoreAllAppsSection> AllApps(Headset headset, string cursor = null, int maxApps = 500)
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "3821696797949516";
