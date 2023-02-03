@@ -9,6 +9,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OculusGraphQLApiLib.Game
@@ -42,10 +43,10 @@ namespace OculusGraphQLApiLib.Game
             }
             Console.WriteLine();
             Manifest manifest = JsonSerializer.Deserialize<Manifest>(File.ReadAllText(manifestPath));
+            Console.WriteLine("Total progress");
             ProgressBarUI totalProgress = new ProgressBarUI();
             totalProgress.Start();
             totalProgress.eTARange = 20;
-            DownloadProgressUI segmentDownloader = new DownloadProgressUI();
             FileManager.RecreateDirectoryIfExisting("tmp");
             long done = 0;
             Logger.notAllowedStrings.Add(access_token);
@@ -53,21 +54,50 @@ namespace OculusGraphQLApiLib.Game
             foreach (KeyValuePair<string, ManifestFile> f in manifest.files) total += f.Value.size;
             List<KeyValuePair<DateTime, long>> lastBytes = new List<KeyValuePair<DateTime, long>>();
             totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
-            foreach (KeyValuePair<string, ManifestFile> f in manifest.files)
+            Thread[] pool = new Thread[5];
+			DownloadProgressUI[] poolUIs = new DownloadProgressUI[5];
+            int startLine = Console.CursorTop + 3;
+			for (int i = 0; i < pool.Length; i++)
+			{
+				poolUIs[i] = new DownloadProgressUI();
+                poolUIs[i].currentLineOverride = startLine + i * 5;
+                Console.SetCursorPosition(0, startLine + i * 5 - 1);
+                Console.WriteLine("Download Thread #" + i);
+			}
+			foreach (KeyValuePair<string, ManifestFile> f in manifest.files)
             {
-
-                string fileDest = destination + f.Key.Replace('/', Path.DirectorySeparatorChar);
-                Console.WriteLine();
-                DownloadFile(f.Value, fileDest, access_token, binaryId, segmentDownloader);
-                done += new FileInfo(fileDest).Length;
-                totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
-                Console.WriteLine();
+                bool foundThread = false;
+				while (!foundThread)
+				{
+					int i = 0;
+					foreach (Thread t in pool)
+					{
+						if (t == null || !t.IsAlive)
+						{
+                            foundThread = true;
+							pool[i] = new Thread(() =>
+                            {
+								string fileDest = destination + f.Key.Replace('/', Path.DirectorySeparatorChar);
+								Console.WriteLine();
+								DownloadFile(f.Value, fileDest, access_token, binaryId, poolUIs[i], i);
+								done += new FileInfo(fileDest).Length;
+								totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
+								Console.WriteLine();
+							});
+							pool[i].Start();
+							break;
+						}
+						i++;
+					}
+					Thread.Sleep(100);
+				}
+                Logger.Log(f.Key);
             }
             Console.ForegroundColor = ConsoleColor.White;
             return Validator.ValidateGameInstall(destination, manifestPath);
         }
 
-        public static bool DownloadFile(ManifestFile file, string fileDest, string access_token, string binaryId, DownloadProgressUI downloadProgressUI = null)
+        public static bool DownloadFile(ManifestFile file, string fileDest, string access_token, string binaryId, DownloadProgressUI downloadProgressUI = null, int threadIndex = 0)
         {
             if(!Logger.notAllowedStrings.Contains(access_token)) Logger.notAllowedStrings.Add(access_token);
             if (downloadProgressUI == null) downloadProgressUI = new DownloadProgressUI();
@@ -76,13 +106,13 @@ namespace OculusGraphQLApiLib.Game
             foreach (object[] segment in file.segments)
             {
                 string url = "https://securecdn.oculus.com/binaries/segment/?access_token=" + access_token + "&binary_id=" + binaryId + "&segment_sha256=" + segment[1];
-                if (!downloadProgressUI.StartDownload(url, AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file", true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } })) return false;
-                Stream s = File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");
+                if (!downloadProgressUI.StartDownload(url, AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file" + threadIndex, true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } })) return false;
+                Stream s = File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file" + threadIndex);
                 s.ReadByte();
                 s.ReadByte();
                 Decompress(s, fileDest);
                 s.Close();
-                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");
+                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file" + threadIndex);
             }
             return true;
         }
