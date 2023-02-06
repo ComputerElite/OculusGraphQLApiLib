@@ -73,8 +73,12 @@ namespace OculusGraphQLApiLib.Game
             if (downloadProgressUI == null) downloadProgressUI = new DownloadProgressUI();
             if (File.Exists(fileDest)) File.Delete(fileDest);
             FileManager.CreateDirectoryIfNotExisting(FileManager.GetParentDirIfExisting(fileDest));
+            int done = 0;
             foreach (object[] segment in file.segments)
-            {
+			{
+				done++;
+				Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Downloading file segment " + done + " / " + file.segments.Length);
                 string url = "https://securecdn.oculus.com/binaries/segment/?access_token=" + access_token + "&binary_id=" + binaryId + "&segment_sha256=" + segment[1];
                 if (!downloadProgressUI.StartDownload(url, AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file", true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } })) return false;
                 Stream s = File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");

@@ -71,11 +71,15 @@ namespace OculusGraphQLApiLib.Game
                 }
                 try
                 {
-                    if (BitConverter.ToString(shaCalculator.ComputeHash(File.OpenRead(file))).Replace("-", "").ToLower() != f.Value.sha256.ToLower())
+                    FileStream stream = File.OpenRead(file);
+                    
+					if (BitConverter.ToString(shaCalculator.ComputeHash(stream)).Replace("-", "").ToLower() != f.Value.sha256.ToLower())
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        stream.Close();
+                        stream.Dispose();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Logger.Log("Hash does not match", LoggingType.Warning);
-                        Console.WriteLine("Hash of " + f.Key + " doesn't match with the one in the manifest! " + GetCheckedString(done, total));
+                        Console.WriteLine("Hash of " + f.Key + " doesn't match with the one in the manifest! " + (repair ? "Redownloading and fixing file. " : "") + GetCheckedString(done, total));
                         if (repair)
                         {
                             Logger.Log("Redownloading " + f.Key + " to " + file);
@@ -84,8 +88,10 @@ namespace OculusGraphQLApiLib.Game
                         }
                     }
                     else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
+					{
+						stream.Close();
+						stream.Dispose();
+						Console.ForegroundColor = ConsoleColor.Green;
                         Logger.Log("Hash checks out");
                         Console.WriteLine("Hash checks out. " + GetCheckedString(done, total));
                         valid++;
