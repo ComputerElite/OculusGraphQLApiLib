@@ -150,6 +150,7 @@ namespace OculusGraphQLApiLib.Game
             Logger.Log("Starting download of " + binaryId);
             Console.WriteLine("Starting download of " + binaryId);
             DownloadProgressUI ui = new DownloadProgressUI();
+            ui.connections = 10;
             Logger.notAllowedStrings.Add(access_token);
             if(!ui.StartDownload(baseDownloadLink, destination, true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } }))
             {
@@ -167,6 +168,7 @@ namespace OculusGraphQLApiLib.Game
             totalProgress.Start();
             totalProgress.eTARange = 20;
             DownloadProgressUI segmentDownloader = new DownloadProgressUI();
+            segmentDownloader.connections = 10;
             FileManager.RecreateDirectoryIfExisting("tmp");
             long done = 0;
             long doneFiles = 0;
