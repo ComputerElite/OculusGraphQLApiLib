@@ -46,6 +46,7 @@ namespace OculusGraphQLApiLib.Game
             totalProgress.Start();
             totalProgress.eTARange = 20;
             DownloadProgressUI segmentDownloader = new DownloadProgressUI();
+            segmentDownloader.connections = 10;
             FileManager.RecreateDirectoryIfExisting("tmp");
             long done = 0;
             Logger.notAllowedStrings.Add(access_token);

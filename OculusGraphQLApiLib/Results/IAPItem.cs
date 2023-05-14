@@ -11,6 +11,7 @@ namespace OculusGraphQLApiLib.Results
         public AppStoreOffer current_offer { get; set; } = new AppStoreOffer();
         public string display_name { get; set; } = "";
         public string display_short_description { get; set; } = "";
+        public string file_name { get; set; }
         public string id { get; set; } = "";
         public ParentApplication parentApplication { get; set; } = new ParentApplication();
         public ParentApplication parent_application
