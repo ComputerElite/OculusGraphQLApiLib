@@ -26,7 +26,7 @@ namespace OculusGraphQLApiLib.Results
         public Organization organization { get; set; } = new Organization();
         public string platform { get; set; } = "";
         public string publisher_name { get; set; } = "";
-        public double quality_rating_aggregate { get; set; } = 0.0;
+        public double? quality_rating_aggregate { get; set; } = 0.0;
         public List<QualityRating> quality_rating_history_aggregate_all { get; set; } = new List<QualityRating>();
         public Nodes<ReleaseChannel> release_channels { get; set; } = new Nodes<ReleaseChannel>();
         public long? release_date { get; set; } = 0;

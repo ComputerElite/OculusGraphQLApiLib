@@ -22,5 +22,10 @@ namespace OculusGraphQLApiLib.Results
             }
         }
         public AssetFile latest_supported_asset_file { get; set; } = new AssetFile();
+        
+        public override string ToString()
+        {
+            return "DLC '" + display_name + "' (" + id + ") of " + parentApplication.id;
+        }
     }
 }
