@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ComputerUtils.FileManaging;
 
 namespace OculusGraphQLApiLib.Game
 {
@@ -31,6 +32,7 @@ namespace OculusGraphQLApiLib.Game
             Console.WriteLine("Validating" + (repair ? " and repairing" : "") + " files of " + gameDirectory);
             Logger.Log("Loading manifest");
             Console.WriteLine("Loading manifest");
+            FileManager.RecreateDirectoryIfExisting(AppDomain.CurrentDomain.BaseDirectory + "tmp");
             if(!File.Exists(manifestPath))
             {
                 Logger.Log(manifestPath + " does not exist. Is the right file passed and does it exist? The game may not be installed.");

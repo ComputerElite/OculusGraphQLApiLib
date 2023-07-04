@@ -29,6 +29,7 @@ namespace OculusGraphQLApiLib.Game
 
         public static bool DownloadRiftGame(string destination, string access_token, string binaryId)
         {
+            FileManager.RecreateDirectoryIfExisting(AppDomain.CurrentDomain.BaseDirectory + "tmp");
             if (!destination.EndsWith(Path.DirectorySeparatorChar.ToString())) destination += Path.DirectorySeparatorChar;
             string manifestPath = destination +  "manifest.json";
             DownloadManifest(manifestPath, access_token, binaryId);
@@ -47,7 +48,6 @@ namespace OculusGraphQLApiLib.Game
             totalProgress.eTARange = 20;
             DownloadProgressUI segmentDownloader = new DownloadProgressUI();
             segmentDownloader.connections = 10;
-            FileManager.RecreateDirectoryIfExisting("tmp");
             long done = 0;
             Logger.notAllowedStrings.Add(access_token);
             long total = 0;
@@ -169,7 +169,6 @@ namespace OculusGraphQLApiLib.Game
             totalProgress.eTARange = 20;
             DownloadProgressUI segmentDownloader = new DownloadProgressUI();
             segmentDownloader.connections = 10;
-            FileManager.RecreateDirectoryIfExisting("tmp");
             long done = 0;
             long doneFiles = 0;
             Logger.notAllowedStrings.Add(access_token);
