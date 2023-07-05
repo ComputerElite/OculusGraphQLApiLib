@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ComputerUtils.FileManaging;
+using OculusGraphQLApiLib.Results;
 
 namespace OculusGraphQLApiLib.Game
 {
@@ -17,6 +19,41 @@ namespace OculusGraphQLApiLib.Game
         public static bool RepairGameInstall(string gameDirectory, string manifestPath, string access_token, string binaryId)
         {
             return ValidateGameInstall(gameDirectory, manifestPath, true, access_token, binaryId);
+        }
+        
+        public static bool RepairGameInstall(string gameDirectory, string manifestPath, string access_token)
+        {
+            Manifest manifest = JsonSerializer.Deserialize<Manifest>(File.ReadAllText(manifestPath));
+            string id = GetBinaryId(manifest);
+            if (id == "")
+            {
+                Logger.Log("Version not found, cannot validate", LoggingType.Warning);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Version not found, cannot validate. If you think this is an issue, contact ComputerElite");
+                Console.ForegroundColor = ConsoleColor.White;
+                return false;
+            }
+            Logger.Log("Found binary id " + id);
+            Console.WriteLine("Found version on Oculus. Repairing files...");
+            return ValidateGameInstall(gameDirectory, manifestPath, true, access_token, id);
+        }
+
+        public static string GetBinaryId(Manifest manifest)
+        {
+            // We got app id and version string, now we gotta ask the Oculus API for the binary id
+            Logger.Log("No binary id passed, getting it from the Oculus API");
+            Console.WriteLine("No binary id passed, getting it from the Oculus API. Please wait a second");
+            Data<NodesPrimaryBinaryApplication> versionS = GraphQLClient.AllVersionsOfApp(manifest.appId);
+            foreach (AndroidBinary v in versionS.data.node.primary_binaries.nodes)
+            {
+                if (v.versionCode == manifest.versionCode)
+                {
+                    // Found version
+                    return v.id;
+                }
+            }
+
+            return "";
         }
 
 
