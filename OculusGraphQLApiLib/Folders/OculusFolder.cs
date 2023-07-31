@@ -25,5 +25,10 @@ namespace OculusGraphQLApiLib.Folders
         {
             return JsonSerializer.Deserialize<Manifest>(File.ReadAllText(GetManifestPath(oculusFolder, canonicalName)));
         }
+
+        public static List<string> GetCanonicalNamesOfInstalledApps(string oculusFolder)
+        {
+            return Directory.GetDirectories(oculusFolder + Path.DirectorySeparatorChar + "Software").ToList().ConvertAll(x => Path.GetFileName(x));
+        }
     }
 }
