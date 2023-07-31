@@ -15,7 +15,8 @@ namespace OculusGraphQLApiLib
         GEARVR = 3,
         PACIFIC = 4, // aka Go
         LAGUNA = 5, // aka Rift S
-        SEACLIFF = 6 // aka Quest Pro
+        SEACLIFF = 6, // aka Quest Pro
+        EUREKA = 7 // aka Quest 3 ?
     }
 
     public class HeadsetTools
@@ -44,6 +45,8 @@ namespace OculusGraphQLApiLib
             {
                 case "MONTEREY":
                     return Headset.MONTEREY;
+                case "EUREKA":
+                    return Headset.EUREKA;
                 case "RIFT":
                     return Headset.RIFT;
                 case "HOLLYWOOD":
@@ -76,6 +79,8 @@ namespace OculusGraphQLApiLib
                     return "Quest 1";
                 case Headset.HOLLYWOOD:
                     return "Quest 2";
+                case Headset.EUREKA:
+                    return "Quest 3";
                 case Headset.GEARVR:
                     return "GearVR";
                 case Headset.PACIFIC:
@@ -99,6 +104,8 @@ namespace OculusGraphQLApiLib
                     return "Quest";
                 case Headset.HOLLYWOOD:
                     return "Quest";
+                case Headset.EUREKA:
+                    return "Quest";
                 case Headset.GEARVR:
                     return "GearVR";
                 case Headset.PACIFIC:
@@ -121,6 +128,8 @@ namespace OculusGraphQLApiLib
                 case Headset.MONTEREY:
                     return "Install";
                 case Headset.HOLLYWOOD:
+                    return "Install";
+                case Headset.EUREKA:
                     return "Install";
                 case Headset.GEARVR:
                     return "Install";
