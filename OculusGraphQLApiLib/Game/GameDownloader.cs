@@ -9,6 +9,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OculusGraphQLApiLib.Game
@@ -77,17 +78,37 @@ namespace OculusGraphQLApiLib.Game
             int done = 0;
             foreach (object[] segment in file.segments)
 			{
-				done++;
-				Console.ForegroundColor = ConsoleColor.White;
+                done++;
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Downloading file segment " + done + " / " + file.segments.Length);
                 string url = "https://securecdn.oculus.com/binaries/segment/?access_token=" + access_token + "&binary_id=" + binaryId + "&segment_sha256=" + segment[1];
-                if (!downloadProgressUI.StartDownload(url, AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file", true, true, new Dictionary<string, string> { { "User-Agent", Constants.UA } })) return false;
-                Stream s = File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");
-                s.ReadByte();
-                s.ReadByte();
-                Decompress(s, fileDest);
-                s.Close();
-                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");
+                bool downloaded = false;
+                const int maxAttempts = 5;
+                for (int i = 0; i < maxAttempts; i++)
+                {
+                    if(i > 0) Console.WriteLine("Download of segment failed. Retrying... (" + (i + 1) + "/" + maxAttempts + ")");
+                    if (!downloadProgressUI.StartDownload(url,
+                            AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file", true,
+                            true, new Dictionary<string, string> { { "User-Agent", Constants.UA } }))
+                    {
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                    Stream s = File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");
+                    s.ReadByte();
+                    s.ReadByte();
+                    Decompress(s, fileDest);
+                    s.Close();
+                    File.Delete(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");
+                    downloaded = true;
+                }
+
+                if (!downloaded)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Download of segment failed. Aborting.");
+                    return false;
+                }
             }
             return true;
         }
