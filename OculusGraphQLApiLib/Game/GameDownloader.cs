@@ -101,6 +101,7 @@ namespace OculusGraphQLApiLib.Game
                     s.Close();
                     File.Delete(AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + "file");
                     downloaded = true;
+                    break;
                 }
 
                 if (!downloaded)
