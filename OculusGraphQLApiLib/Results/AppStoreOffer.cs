@@ -15,10 +15,34 @@ namespace OculusGraphQLApiLib.Results
         public string promo_benefit { get; set; } = null;
         public AppStoreOfferPrice strikethrough_price { get; set; } = new AppStoreOfferPrice();
     }
+    public class AppStoreTrialOffer
+    {
+        public List<string> descriptions { get; set; } = new List<string>();
+        public long trial_start_time { get; set; } = 0;
+        public long trial_end_time { get; set; } = 0;
+        public string id { get; set; } = "";
+        public bool show_timer { get; set; } = false;
+        public AppStoreOfferPrice price { get; set; } = new AppStoreOfferPrice();
+        public string promo_benefit { get; set; } = null;
+        public AppStoreOfferPrice strikethrough_price { get; set; } = new AppStoreOfferPrice();
+    }
 
     public class AppStoreOfferPrice
     {
         public string offset_amount { get; set; } = "0";
+
+        public int offset_amount_numerical
+        {
+            get
+            {
+                return Convert.ToInt32(offset_amount);
+            }
+            set
+            {
+                offset_amount = value.ToString();
+            }
+        }
+
         public string currency { get; set; } = "USD";
         public string formatted { get; set; } = "$0.00";
     }

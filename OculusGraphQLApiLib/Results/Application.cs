@@ -6,13 +6,14 @@ namespace OculusGraphQLApiLib.Results
     public class Application
     {
         public string appName { get; set; } = "";
-        public AppStoreOffer baseline_offer { get; set; } = new AppStoreOffer();
+        public AppStoreOffer baseline_offer { get; set; } = null;
         public string canonicalName { get; set; } = "";
         public OculusUri cover_landscape_image { get; set; } = new OculusUri();
         public OculusUri cover_portrait_image { get; set; } = new OculusUri();
         public OculusUri cover_square_image { get; set; } = new OculusUri();
-        public AppStoreOffer current_gift_offer { get; set; } = new AppStoreOffer();
-        public AppStoreOffer current_offer { get; set; } = new AppStoreOffer();
+        public AppStoreOffer current_gift_offer { get; set; } = null;
+        public AppStoreOffer current_offer { get; set; } = null;
+        public AppStoreTrialOffer current_trial_offer { get; set; } = null;
         public string displayName { get { return display_name; } set { display_name = value; } }
         public string display_long_description { get; set; } = "";
         public string display_name { get; set; } = "";
