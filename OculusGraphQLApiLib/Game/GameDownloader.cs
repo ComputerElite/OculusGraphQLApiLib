@@ -17,6 +17,7 @@ namespace OculusGraphQLApiLib.Game
     public class GameDownloader
     {
         public static string customManifestError = "";
+        public static bool ignoreErrors = false;
         private static void Decompress(Stream input, string dest)
         {
             Ionic.Zlib.DeflateStream s = new Ionic.Zlib.DeflateStream(input, Ionic.Zlib.CompressionMode.Decompress);
@@ -48,7 +49,7 @@ namespace OculusGraphQLApiLib.Game
             totalProgress.Start();
             totalProgress.eTARange = 20;
             DownloadProgressUI segmentDownloader = new DownloadProgressUI();
-            segmentDownloader.connections = 10;
+            segmentDownloader.connections = 5;
             long done = 0;
             Logger.notAllowedStrings.Add(access_token);
             long total = 0;
@@ -60,8 +61,10 @@ namespace OculusGraphQLApiLib.Game
 
                 string fileDest = destination + f.Key.Replace('/', Path.DirectorySeparatorChar);
                 Console.WriteLine();
-                DownloadFile(f.Value, fileDest, access_token, binaryId, segmentDownloader);
-                done += new FileInfo(fileDest).Length;
+                if (DownloadFile(f.Value, fileDest, access_token, binaryId, segmentDownloader))
+                {
+                    done += new FileInfo(fileDest).Length;
+                }
                 totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true);
                 Console.WriteLine();
             }
@@ -107,7 +110,7 @@ namespace OculusGraphQLApiLib.Game
                 if (!downloaded)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Download of segment failed. Aborting.");
+                    Console.WriteLine("Download of segment failed.");
                     return false;
                 }
             }
