@@ -6,7 +6,7 @@ namespace OculusGraphQLApiLib
 {
     public class TokenTools
     {
-        public static bool IsUserTokenValid(string token)
+        public static bool IsUserTokenValid(string token, bool output = true)
         {
             //yes this is basic
             Logger.Log("Checking if token matches requirements");
@@ -14,24 +14,24 @@ namespace OculusGraphQLApiLib
             if (token.Contains("%"))
             {
                 Logger.Log("Token contains %. Token most likely comes from an uri and won't work");
-                Console.WriteLine("You got your token from the wrong place. Go to the payload tab. Don't get it from the url.");
+                if(output) Console.WriteLine("You got your token from the wrong place. Go to the payload tab. Don't get it from the url.");
                 return false;
             }
             if (!token.StartsWith("OC"))
             {
                 Logger.Log("Token doesn't start with OC");
-                Console.WriteLine("Tokens must start with 'OC'. Please get a new one");
+                if(output) Console.WriteLine("Tokens must start with 'OC'. Please get a new one");
                 return false;
             }
             if (token.Contains("|"))
             {
                 Logger.Log("Token contains | which usually indicates an application token which is not valid for user tokens");
-                Console.WriteLine("You seem to have entered a token of an application. Please get YOUR token. Usually this can be done by using another request in the network tab.");
+                if(output) Console.WriteLine("You seem to have entered a token of an application. Please get YOUR token. Usually this can be done by using another request in the network tab.");
                 return false;
             }
             if (Regex.IsMatch(token, "OC[0-9]{15}")) {
                 Logger.Log("Token matches /OC[0-9}{15}/ which usually indicates a changed oculus store token");
-                Console.WriteLine("Don't change your token. This will only cause issues. Check another request for the right token.");
+                if(output) Console.WriteLine("Don't change your token. This will only cause issues. Check another request for the right token.");
                 return false;
             }
             Console.ForegroundColor = ConsoleColor.White;
