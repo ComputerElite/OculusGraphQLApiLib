@@ -59,7 +59,7 @@ namespace OculusGraphQLApiLib.Game
 
         public static string GetCheckedString(long done, long total)
         {
-            return "Checked " + SizeConverter.ByteSizeToString(done) + " of " + SizeConverter.ByteSizeToString(total) + " (" + (done / (double)total * 100) + " %)";
+            return "Checked " + SizeConverter.ByteSizeToString(done) + " of " + SizeConverter.ByteSizeToString(total) + " (" + Math.Round(done / (double)total * 100, 1) + " %)";
         }
 
         public static bool ValidateGameInstall(string gameDirectory, string manifestPath, bool repair = false, string access_token = "", string binaryId = "")
@@ -83,6 +83,7 @@ namespace OculusGraphQLApiLib.Game
             int valid = 0;
             long total = 0;
             long done = 0;
+            List<string> filesToDownload = new List<string>();
             foreach (KeyValuePair<string, ManifestFile> f in manifest.files) total += f.Value.size;
             foreach (KeyValuePair<string, ManifestFile> f in manifest.files)
             {
@@ -96,16 +97,8 @@ namespace OculusGraphQLApiLib.Game
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Logger.Log("File does not exist", LoggingType.Warning);
-                    Console.WriteLine("File does not exist. Downloading");
-                    if (repair)
-                    {
-                        Logger.Log("Redownloading " + f.Key + " to " + file);
-                        if (GameDownloader.DownloadFile(f.Value, file, access_token, binaryId))
-                        {
-                            valid++;
-                        }
-                        Console.WriteLine(GetCheckedString(done, total));
-                    }
+                    Console.WriteLine("File does not exist. Noting down for download. " + GetCheckedString(done, total));
+                    filesToDownload.Add(f.Key);
                     continue;
                 }
                 try
@@ -118,13 +111,8 @@ namespace OculusGraphQLApiLib.Game
                         stream.Dispose();
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Logger.Log("Hash does not match", LoggingType.Warning);
-                        Console.WriteLine("Hash of " + f.Key + " doesn't match with the one in the manifest! " + (repair ? "Redownloading and fixing file. " : "") + GetCheckedString(done, total));
-                        if (repair)
-                        {
-                            Logger.Log("Redownloading " + f.Key + " to " + file);
-                            if (GameDownloader.DownloadFile(f.Value, file, access_token, binaryId)) valid++;
-                            Console.WriteLine(GetCheckedString(done, total));
-                        }
+                        Console.WriteLine("Hash of " + f.Key + " doesn't match with the one in the manifest! " + (repair ? "Noting down for download " : "") + GetCheckedString(done, total));
+                        filesToDownload.Add(f.Key);
                     }
                     else
 					{
@@ -142,8 +130,35 @@ namespace OculusGraphQLApiLib.Game
                     Logger.Log("Hash couldn't be computed", LoggingType.Warning);
                     Console.WriteLine("Hash of " + f.Key + " is unable to get Computed (" + e.Message + "). " + GetCheckedString(done, total));
                 }
-                
             }
+
+            if (repair)
+            {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Preparing download of " + filesToDownload.Count + " files");
+                List<FileSegment> segments = new List<FileSegment>();
+                long downloadTotal = 0;
+                foreach (string f in filesToDownload)
+                {
+                    downloadTotal += manifest.files[f].size;
+                    foreach (object[] segment in manifest.files[f].segments)
+                    {
+                        FileSegment seg = new FileSegment();
+                        seg.sha256 = segment[1].ToString();
+                        seg.binaryId = binaryId;
+                        seg.tmpFileDestination = AppDomain.CurrentDomain.BaseDirectory + "tmp" + Path.DirectorySeparatorChar + seg.sha256;
+                        seg.segmentCount = manifest.files[f].segments.Length;
+                        seg.file = f;
+                        segments.Add(seg);
+                    }
+                }
+                valid += GameDownloader.DownloadSegments(downloadTotal, segments, access_token, manifest, gameDirectory, false);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
             if (i != valid)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -160,6 +175,8 @@ namespace OculusGraphQLApiLib.Game
                 Console.ForegroundColor = ConsoleColor.White;
                 return true;
             }
+            Console.WriteLine();
+            Console.WriteLine();
         }
     }
 }
