@@ -150,7 +150,7 @@ namespace OculusGraphQLApiLib.Game
             Console.WriteLine();
             
             List<FileSegment> queuedSegments = new List<FileSegment>(segmentsToDownload);
-            Dictionary<string, FileSegment> downloadedSegments = new Dictionary<string, FileSegment>();
+            List<FileSegment> downloadedSegments = new List<FileSegment>();
 
             // Create Segment downloaders
             List<SegmentDownloader> segmentDownloaders = new List<SegmentDownloader>();
@@ -191,7 +191,7 @@ namespace OculusGraphQLApiLib.Game
                     {
                         FileSegment downloaded = segmentDownloaders[i].downloadedFiles[0];
                         if(downloaded == null) continue;
-                        downloadedSegments.Add(downloaded.sha256, downloaded);
+                        downloadedSegments.Add(downloaded);
                         segmentDownloaders[i].downloadedFiles.RemoveAt(segmentDownloaders[i].downloadedFiles.FindIndex(x => x.sha256 == downloaded.sha256));
                     }
 
@@ -225,7 +225,7 @@ namespace OculusGraphQLApiLib.Game
                     segmentsSHA256.Add(segment[1].ToString());
                 }
 
-                if (!downloadedSegments.Any(x => segmentsSHA256.Contains(x.Key)))
+                if (!downloadedSegments.Any(x => segmentsSHA256.Contains(x.sha256)))
                 {
                     // No downloaded segment contains this file. Skip it
                     Logger.Log("Skipping " + f.Key + " as no downloaded segment is part of it (" + SizeConverter.ByteSizeToString(f.Value.size) + ")");
@@ -240,13 +240,13 @@ namespace OculusGraphQLApiLib.Game
                 bool success = true;
                 foreach (object[] segment in f.Value.segments)
                 {
-                    if (!downloadedSegments.ContainsKey(segment[1].ToString()))
+                    if (!downloadedSegments.Any(x => x.sha256 == segment[1].ToString()))
                     {
                         success = false;
                         break;
                     }
                     
-                    FileSegment s = downloadedSegments[segment[1].ToString()];
+                    FileSegment s = downloadedSegments.FirstOrDefault(x => x.sha256 == segment[1].ToString());
                     if(!File.Exists(s.tmpFileDestination))
                     {
                         if (announceMissingFiles)
@@ -296,7 +296,7 @@ namespace OculusGraphQLApiLib.Game
             return goodFiles;
         }
 
-        public static void ShowProgress(ref DateTime lastProgressDisplayUpdate, ref ProgressBarUI totalProgress, ref long done, ref long total, ref List<SegmentDownloader> segmentDownloaders, ref Dictionary<string, FileSegment> downloadedSegments, ref List<FileSegment> segmentsToDownload)
+        public static void ShowProgress(ref DateTime lastProgressDisplayUpdate, ref ProgressBarUI totalProgress, ref long done, ref long total, ref List<SegmentDownloader> segmentDownloaders, ref List<FileSegment> downloadedSegments, ref List<FileSegment> segmentsToDownload)
         {
             lastProgressDisplayUpdate = DateTime.Now;
             //Console.WriteLine("Total Progress");
