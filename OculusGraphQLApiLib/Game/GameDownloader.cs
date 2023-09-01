@@ -31,7 +31,7 @@ namespace OculusGraphQLApiLib.Game
 
         public static bool DownloadRiftGame(string destination, string access_token, string binaryId)
         {
-            FileManager.RecreateDirectoryIfExisting(AppDomain.CurrentDomain.BaseDirectory + "tmp");
+            FileManager.CreateDirectoryIfNotExisting(AppDomain.CurrentDomain.BaseDirectory + "tmp");
             if (!destination.EndsWith(Path.DirectorySeparatorChar.ToString())) destination += Path.DirectorySeparatorChar;
             string manifestPath = destination +  "manifest.json";
             DownloadManifest(manifestPath, access_token, binaryId);
@@ -120,7 +120,7 @@ namespace OculusGraphQLApiLib.Game
             
             DownloadSegments(total, segmentsToDownload, access_token, manifest, destination, true);
             
-            return Validator.ValidateGameInstall(destination, manifestPath);
+            return Validator.ValidateGameInstall(destination, manifestPath, true);
         }
 
         /// <summary>
@@ -264,7 +264,11 @@ namespace OculusGraphQLApiLib.Game
                     segmentStream.CopyTo(fileStream);
                     segmentStream.Close();
                     segmentStream.Dispose();
-                    File.Delete(s.tmpFileDestination);
+                    
+                    // remove 1 occurance of segment
+                    downloadedSegments.RemoveAt(downloadedSegments.FindIndex(x => x.sha256 == segment[1].ToString()));
+                    // Delete the downloaded segment if it isn't needed anymore
+                    if(!downloadedSegments.Any(x => x.sha256 == segment[1].ToString())) File.Delete(s.tmpFileDestination);
                 }
                 fileStream.Close();
                 fileStream.Dispose();

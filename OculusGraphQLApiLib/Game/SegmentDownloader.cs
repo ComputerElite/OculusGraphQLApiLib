@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Cryptography;
 using ComputerUtils;
 using ComputerUtils.ConsoleUi;
+using ComputerUtils.Logging;
 using ComputerUtils.VarUtils;
 
 namespace OculusGraphQLApiLib.Game;
@@ -26,6 +27,8 @@ public class SegmentDownloader
     public ProgressBarUI progressUI;
 
     public string extraText = "";
+
+    private int downloadAttempt = 0;
 
     public void DownloadNextFileFromQueue()
     {
@@ -73,6 +76,7 @@ public class SegmentDownloader
         };
         downloader.OnDownloadComplete = () =>
         {
+            downloadAttempt = 1;
             // decompress downloaded file
             extraText = "Decompressing " + currentlyDownloading.file;
             Stream s = File.OpenRead(currentlyDownloading.tmpFileDestination + ".tmp");
@@ -86,7 +90,22 @@ public class SegmentDownloader
         };
         downloader.OnDownloadError = () =>
         {
-            downloadedFiles.Add(currentlyDownloading);
+            if (downloadAttempt >= 3)
+            {
+                // Download failed too often. Abort.
+                downloadAttempt = 1;
+                Logger.Log("Download of " + currentlyDownloading.file + " (" + currentlyDownloading.sha256 + ") failed. Max retries reached. Aborting.", LoggingType.Error);
+            }
+            else
+            {
+                downloadedBytes = 0;
+                totalDownloadedBytes = 0;
+                totalBytes = 0;
+                downloadAttempt++;
+                Logger.Log("Download of " + currentlyDownloading.file + " (" + currentlyDownloading.sha256 + ") failed. Retrying... Attempt " + downloadAttempt, LoggingType.Warning);
+                // Add download back to queue to retry.
+                downloadQueue.Insert(0, currentlyDownloading);
+            }
             currentlyDownloading = new FileSegment();
             DownloadNextFileFromQueue();
         };
