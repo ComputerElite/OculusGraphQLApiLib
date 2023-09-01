@@ -145,7 +145,7 @@ namespace OculusGraphQLApiLib.Game
             Console.WriteLine("Total Progress");
             ProgressBarUI totalProgress = new ProgressBarUI();
             totalProgress.Start();
-            totalProgress.eTARange = 5; // use last 5 progress reports for eta
+            totalProgress.eTARange = 20; // use last 20 progress reports for eta
             totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), "", true, true);
             Console.WriteLine();
             
@@ -301,12 +301,16 @@ namespace OculusGraphQLApiLib.Game
             lastProgressDisplayUpdate = DateTime.Now;
             //Console.WriteLine("Total Progress");
             totalProgress.UpdateProgress(done, total, SizeConverter.ByteSizeToString(done), SizeConverter.ByteSizeToString(total), downloadedSegments.Count + " / " + segmentsToDownload.Count + " segments downloaded", true, true);
-            Console.WriteLine();
-            Console.WriteLine("Download jobs");
+            ConsoleUiController.WriteEmptyLine();
+            ConsoleUiController.WriteEmptyLine("Download jobs");
             for (int i = 0; i < segmentDownloaders.Count; i++)
             {
                 segmentDownloaders[i].ShowProgress();
             }
+
+            ConsoleUiController.WriteEmptyLine();
+            ConsoleUiController.WriteEmptyLine();
+            ConsoleUiController.WriteEmptyLine();
         }
 
         public static string ConstructSegmentDownloadUrl(string binaryId, string sha256, string access_token)
