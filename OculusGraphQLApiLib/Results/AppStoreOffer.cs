@@ -53,10 +53,10 @@ namespace OculusGraphQLApiLib.Results
             }
         }
 
-        public string GetFormattedPrice(int price, string currency)
+        public static string GetFormattedPrice(long price, string currency)
         {
-            int cents = price % 100;
-            int dollars = (price - cents) / 100;
+            long cents = price % 100;
+            long dollars = (price - cents) / 100;
             string formattedPrice = dollars + "." + cents.ToString("00");
             switch (currency)
             {
@@ -69,6 +69,11 @@ namespace OculusGraphQLApiLib.Results
             }
 
             return formattedPrice;
+        }
+        
+        public static string GetFormattedPrice(int price, string currency)
+        {
+            return GetFormattedPrice(Convert.ToInt32(price), currency);
         }
     }
 }
