@@ -44,6 +44,31 @@ namespace OculusGraphQLApiLib.Results
         }
 
         public string currency { get; set; } = "USD";
-        public string formatted { get; set; } = "$0.00";
+
+        public string formatted
+        {
+            get
+            {
+                return GetFormattedPrice(offset_amount_numerical, currency);
+            }
+        }
+
+        public string GetFormattedPrice(int price, string currency)
+        {
+            int cents = price % 100;
+            int dollars = (price - cents) / 100;
+            string formattedPrice = dollars + "." + cents.ToString("00");
+            switch (currency)
+            {
+                case "AUD":
+                    return "A$" + formattedPrice;
+                case "USD":
+                    return "$" + formattedPrice;
+                case "EUR":
+                    return "€" + formattedPrice;
+            }
+
+            return formattedPrice;
+        }
     }
 }
