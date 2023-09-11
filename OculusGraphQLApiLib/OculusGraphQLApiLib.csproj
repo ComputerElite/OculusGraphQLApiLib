@@ -9,11 +9,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ComputerUtils\ComputerUtils\ComputerUtils.csproj" />
+    <Reference Include="System.IO.Compression" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.IO.Compression" />
+    <ProjectReference Include="..\..\ComputerUtils\ComputerUtils\ComputerUtils.csproj" />
   </ItemGroup>
 
 </Project>

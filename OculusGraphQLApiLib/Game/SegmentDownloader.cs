@@ -43,6 +43,11 @@ public class SegmentDownloader
         downloading = true;
         currentlyDownloading = downloadQueue[0];
         downloadQueue.RemoveAt(0);
+        if (currentlyDownloading == null)
+        {
+            DownloadNextFileFromQueue();
+            return;
+        }
 
         extraText = "Checking for " + currentlyDownloading.file;
         
