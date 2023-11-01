@@ -28,6 +28,19 @@ namespace OculusGraphQLApiLib.Results
             {
                 return long.Parse(required_space);
             } }
+        public string total_installed_space { get; set; } = "0";
+        public long total_installed_space_numerical { get
+        {
+            return long.Parse(total_installed_space);
+        } }
+
+        public string required_space_adjusted { get; set; } = "0";
+
+        public long required_space_adjusted_numerical { get
+        {
+            return long.Parse(required_space_adjusted);
+        } }
+
         public string size { get; set; } = "0";
         public long size_numerical
         {
