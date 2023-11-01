@@ -20,6 +20,7 @@ public class SegmentDownloader
     public long downloadedBytes { get; set; } = 0;
     public long totalBytes { get; set; } = 0;
     public long totalDownloadedBytes { get; set; } = 0;
+    public const string UserAgent = "OculusGraphQLApiLib/1.0";
     private long finishedFilesTotalDownloadedBytes { get; set; } = 0;
     SHA256 shaCalculator = SHA256.Create();
     
@@ -100,7 +101,8 @@ public class SegmentDownloader
             {
                 // Download failed too often. Abort.
                 downloadAttempt = 1;
-                Logger.Log("Download of " + currentlyDownloading.file + " (" + currentlyDownloading.sha256 + ") failed. Max retries reached. Aborting.", LoggingType.Error);
+                Logger.Log("Download of " + currentlyDownloading.file + " (" + currentlyDownloading.sha256 + ") failed. Max retries reached.", LoggingType.Error);
+                downloadedFiles.Add(currentlyDownloading);
             }
             else
             {

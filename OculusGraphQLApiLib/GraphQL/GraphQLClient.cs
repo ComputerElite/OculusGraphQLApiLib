@@ -19,10 +19,14 @@ namespace OculusGraphQLApiLib
         public static bool throwException = true;
         public static bool log = true;
         public static int retryTimes = 3;
+        public static Dictionary<string, string> customHeaders = new Dictionary<string, string>();
         public static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
+        public delegate void OAuthException(string message);
+
+        public static event OAuthException OnOAuthException;
 
         public GraphQLClient(string uri, GraphQLOptions options)
         {
@@ -54,7 +58,8 @@ namespace OculusGraphQLApiLib
             }
             catch (WebException e)
             {
-                if (log) Logger.Log("Request failed (" + e.Status + "): \n" + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
+                string response = new StreamReader(e.Response.GetResponseStream()).ReadToEnd();
+                if (log) Logger.Log("Request failed (" + e.Status + "): \n" + response, LoggingType.Error);
                 Console.ForegroundColor = ConsoleColor.Red;
                 if(log) Console.WriteLine("Request to Oculus failed. Please try again later and/or contact ComputerElite.");
                 if(throwException) throw new Exception(e.Status.ToString().StartsWith("4") ? "I fuqed up" : "Some Request to Oculus failed so yeah idk how to handle it.");
@@ -62,7 +67,7 @@ namespace OculusGraphQLApiLib
             return "{}";
         }
 
-        public string Request(bool asBody = false, Dictionary<string, string> customHeaders = null, int retry = 0, string status = "200")
+        public string Request(bool asBody = false, int retry = 0, string status = "200")
         {
             if (retry == retryTimes)
             {
@@ -74,6 +79,7 @@ namespace OculusGraphQLApiLib
             }
             if(log && retry != 0) Logger.Log("Starting retry number " + retry);
             WebClient c = new WebClient();
+            c.Headers.Add("User-Agent", Constants.UA);
             if (customHeaders != null)
             {
                 foreach (KeyValuePair<string, string> header in customHeaders)
@@ -92,9 +98,23 @@ namespace OculusGraphQLApiLib
             }
             catch (WebException e)
             {
-
-                if (log) Logger.Log("Request failed, retrying (" + e.Status.ToString() + ", " + (int)e.Status + "): \n" + new StreamReader(e.Response.GetResponseStream()).ReadToEnd(), LoggingType.Error);
-                return Request(asBody, customHeaders, retry + 1, e.Status.ToString());
+                string response = new StreamReader(e.Response.GetResponseStream()).ReadToEnd();
+                try
+                {
+                    ErrorContainer error = JsonSerializer.Deserialize<ErrorContainer>(response);
+                    if (error.error.type.ToLower() == "oauthexception")
+                    {
+                        if (log) Logger.Log("OAuthException: " + error.error.message, LoggingType.Error);
+                        OnOAuthException?.Invoke(error.error.message);
+                        return "{}";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if(log) Logger.Log("Couldn't parse error message: " + ex, LoggingType.Warning);
+                }
+                if (log) Logger.Log("Request failed, retrying (" + e.Status.ToString() + ", " + (int)e.Status + "): \n" + response, LoggingType.Error);
+                return Request(asBody, retry + 1, e.Status.ToString());
             }
             return "{}";
         }
@@ -201,12 +221,12 @@ namespace OculusGraphQLApiLib
             return c;
         }
 
-        public static Data<Application> GetAppDetail(string id, Headset headset)
+        public static DataItem<Application> GetAppDetail(string id, Headset headset)
         {
             GraphQLClient c = OculusTemplate();
-            c.options.doc_id = "4282918028433524";
-            c.options.variables = "{\"itemId\":\"" + id + "\",\"first\":20,\"last\":null,\"after\":null,\"before\":null,\"forward\":true,\"ordering\":null,\"ratingScores\":null,\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\"}";
-            return JsonSerializer.Deserialize<Data<Application>>(c.Request(), jsonOptions);
+            c.options.doc_id = "6549406941839522";
+            c.options.variables = "{\"itemId\":\"" + id + "\",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\"}";
+            return JsonSerializer.Deserialize<DataItem<Application>>(c.Request(), jsonOptions);
         }
 
         public static Data<Application> GetDLCs(string appId)
