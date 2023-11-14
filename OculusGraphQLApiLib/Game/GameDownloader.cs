@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -192,13 +193,13 @@ namespace OculusGraphQLApiLib.Game
                         FileSegment downloaded = segmentDownloaders[i].downloadedFiles[0];
                         if(downloaded == null) continue;
                         downloadedSegments.Add(downloaded);
-                        segmentDownloaders[i].downloadedFiles.RemoveAt(segmentDownloaders[i].downloadedFiles.FindIndex(x => x.sha256 == downloaded.sha256));
+                        segmentDownloaders[i].downloadedFiles.RemoveAt(0);
                     }
 
                     done += segmentDownloaders[i].totalDownloadedBytes;
                 }
 
-                bool shouldUpdateDisplayedProgress = (DateTime.Now - lastProgressDisplayUpdate).TotalMilliseconds > 100;
+                bool shouldUpdateDisplayedProgress = (DateTime.Now - lastProgressDisplayUpdate).TotalMilliseconds > 50;
                 if (shouldUpdateDisplayedProgress)
                 {
                     ShowProgress(ref lastProgressDisplayUpdate, ref totalProgress, ref done, ref total, ref segmentDownloaders, ref downloadedSegments, ref segmentsToDownload);

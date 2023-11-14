@@ -102,12 +102,12 @@ public class SegmentDownloader
                 // Download failed too often. Abort.
                 downloadAttempt = 1;
                 Logger.Log("Download of " + currentlyDownloading.file + " (" + currentlyDownloading.sha256 + ") failed. Max retries reached.", LoggingType.Error);
+                currentlyDownloading.error = true;
                 downloadedFiles.Add(currentlyDownloading);
             }
             else
             {
                 downloadedBytes = 0;
-                totalDownloadedBytes = 0;
                 totalBytes = 0;
                 downloadAttempt++;
                 Logger.Log("Download of " + currentlyDownloading.file + " (" + currentlyDownloading.sha256 + ") failed. Retrying... Attempt " + downloadAttempt, LoggingType.Warning);

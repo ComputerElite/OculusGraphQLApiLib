@@ -3,6 +3,11 @@
 public class FileSegment
 {
     /// <summary>
+    /// Keeps track of errors during download
+    /// </summary>
+    public bool error { get; set; } = false;
+
+    /// <summary>
     /// binary id of the version
     /// </summary>
     public string binaryId { get; set; } = "";
