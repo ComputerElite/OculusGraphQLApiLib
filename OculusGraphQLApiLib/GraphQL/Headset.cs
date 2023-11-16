@@ -16,7 +16,8 @@ namespace OculusGraphQLApiLib
         PACIFIC = 4, // aka Go
         LAGUNA = 5, // aka Rift S
         SEACLIFF = 6, // aka Quest Pro
-        EUREKA = 7 // aka Quest 3 ?
+        EUREKA = 7, // aka Quest 3 ?
+        PANTHER = 8 // Unknown
     }
 
     public class HeadsetTools
@@ -59,6 +60,8 @@ namespace OculusGraphQLApiLib
                     return Headset.LAGUNA;
                 case "SEACLIFF":
                     return Headset.SEACLIFF;
+                case "PANTHER":
+                    return Headset.PANTHER;
             }
             return Headset.INVALID;
         }
@@ -87,8 +90,10 @@ namespace OculusGraphQLApiLib
                     return "Go";
                 case Headset.SEACLIFF:
                     return "Quest Pro";
+                case Headset.PANTHER:
+                    return "Unknown headset (PANTHER)";
                 default:
-                    return "unknown";
+                    return "Unknown " + headset;
             }
         }
 
@@ -112,6 +117,8 @@ namespace OculusGraphQLApiLib
                     return "Go";
                 case Headset.SEACLIFF:
                     return "Quest";
+                case Headset.PANTHER:
+                    return "Quest (maybe)";
                 default:
                     return "unknown";
             }
@@ -136,6 +143,8 @@ namespace OculusGraphQLApiLib
                 case Headset.PACIFIC:
                     return "Install";
                 case Headset.SEACLIFF:
+                    return "Install";
+                case Headset.PANTHER:
                     return "Install";
             }
             return "unknown";
