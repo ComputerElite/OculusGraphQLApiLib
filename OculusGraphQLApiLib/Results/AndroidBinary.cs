@@ -30,7 +30,7 @@ namespace OculusGraphQLApiLib.Results
         public string launch_file_2d { get; set; } = null;
         public string launch_parameters { get; set; } = "";
         public string launch_parameters_2d { get; set; } = null;
-        public string Platform { get; set; } = "PC";
+        public string Platform { get; set; } = "";
         public string release_notes_plain_text { get; set; } = "";
         public string required_space { get; set; } = "0";
         public long required_space_numerical { get
