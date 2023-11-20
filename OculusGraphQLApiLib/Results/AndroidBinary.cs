@@ -8,7 +8,16 @@ namespace OculusGraphQLApiLib.Results
         public Application binary_application { get; set; } = null;
         public string id { get; set; } = "";
         public string version { get; set; } = "";
-        public string platform { get; set; } = "";
+
+        public string platform
+        {
+            get
+            {
+                return Platform;
+            }
+            set { Platform = value; }
+        }
+
         public string package_name { get; set; } = null;
         public string file_name { get; set; } = "";
         public string uri { get; set; } = "";
