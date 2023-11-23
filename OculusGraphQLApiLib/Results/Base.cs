@@ -1,35 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OculusGraphQLApiLib.Results
 {
     public class GraphQLBase
     {
         public string __typename { get; set; } = "";
-
-        public bool IsFacebookVideo()
-        {
-            return __typename == "FacebookVideo";
-        }
-
-        public bool IsApplication()
-        {
-            return __typename == "Application";
-        }
-
-        public bool IsAppStoreAllAppsSection()
-        {
-            return __typename == "AppStoreAllAppsSection";
-        }
-
-        public bool IsAppItemBundle()
-        {
-            return __typename == "AppItemBundle";
-        }
-
-        public bool IsIAPItem()
-        {
-            return __typename == "IAPItem";
-        }
+        public OculusTypeName typename_enum { get
+            {
+                OculusTypeName result = OculusTypeName.Unknown;
+                if(!Enum.TryParse(__typename, true, out result)) result = OculusTypeName.Unknown;
+                return result;
+            } }
     }
 
     public class Data<T>
@@ -94,5 +76,17 @@ namespace OculusGraphQLApiLib.Results
     {
         public T node { get; set; } = default(T);
         public string cursor { get; set; } = "";
+    }
+
+    public enum OculusTypeName
+    {
+        Unknown,
+        PCBinary,
+        AndroidBinary,
+        Application,
+        FacebookVideo,
+        AppItemBundle,
+        IAPItem,
+        AppStoreAllAppsSection,
     }
 }

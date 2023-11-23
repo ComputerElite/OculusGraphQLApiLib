@@ -7,7 +7,7 @@ namespace OculusGraphQLApiLib
 {
     public class Tests
     {
-        public static string appid = "2448060205267927";
+        public static string appid = "1304877726278670";
         public static string releasechannelid = "703449633385683";
         public static void Start()
         {
@@ -58,6 +58,13 @@ namespace OculusGraphQLApiLib
         {
             Start();
             Console.WriteLine(Serialize( GraphQLClient.VersionHistory(appid)));
+            Stop();
+        }
+        
+        public static void AppDetails()
+        {
+            Start();
+            Console.WriteLine(Serialize(GraphQLClient.GetAppDetail(appid, Headset.MONTEREY)));
             Stop();
         }
 
