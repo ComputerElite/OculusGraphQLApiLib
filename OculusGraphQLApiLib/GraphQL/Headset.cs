@@ -42,28 +42,9 @@ namespace OculusGraphQLApiLib
 
         public static Headset GetHeadsetFromCodeName(string codename)
         {
-            switch(codename)
-            {
-                case "MONTEREY":
-                    return Headset.MONTEREY;
-                case "EUREKA":
-                    return Headset.EUREKA;
-                case "RIFT":
-                    return Headset.RIFT;
-                case "HOLLYWOOD":
-                    return Headset.HOLLYWOOD;
-                case "GEARVR":
-                    return Headset.GEARVR;
-                case "PACIFIC":
-                    return Headset.PACIFIC;
-                case "LAGUNA":
-                    return Headset.LAGUNA;
-                case "SEACLIFF":
-                    return Headset.SEACLIFF;
-                case "PANTHER":
-                    return Headset.PANTHER;
-            }
-            return Headset.INVALID;
+            Headset headset = Headset.INVALID;
+            if (!Enum.TryParse(codename, true, out headset)) return Headset.INVALID;
+            return headset;
         }
 
         public static string GetHeadsetCodeName(Headset headset)
