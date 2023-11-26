@@ -47,19 +47,19 @@ namespace OculusGraphQLApiLib.Results
         public List<Error> errors { get; set; } = new List<Error>();
     }
 
-    public class Viewer<T>
+    public class Viewer<T>: GraphQLBase
     {
         public T viewer { get; set; } = default;
         public string cursor { get; set; } = "";
     }
 
-    public class Nodes<T>
+    public class Nodes<T> : GraphQLBase
     {
         public long? count { get; set; } = 0;
         public List<T> nodes { get; set; } = new List<T>();
     }
 
-    public class Edges<T>
+    public class Edges<T>: GraphQLBase
     {
         public long? count { get; set; } = 0;
         public List<T> edges { get; set; } = new List<T>();

@@ -10,7 +10,7 @@ namespace OculusGraphQLApiLib.Results
     {
         public string alias { get { return display_name; } set { display_name = value; } }
         public string display_name { get; set; } = "";
-        public OculusUri profile_photo { get;set; } = new OculusUri();
+        public OculusImage profile_photo { get;set; } = new OculusImage();
         public string id { get; set; } = "";
         public Nodes<Entitlement> active_entitlements { get; set; } = new Nodes<Entitlement>();
     }

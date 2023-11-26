@@ -8,6 +8,14 @@ namespace OculusGraphQLApiLib.Results
 {
     public class AppStoreOffer
     {
+        public string status { get; set; } = "";
+        public OfferStatus status_enum
+        {
+            get
+            {
+                return (OfferStatus)Enum.Parse(typeof(OfferStatus), status);
+            }
+        }
         public long end_time { get; set; } = 0;
         public string id { get; set; } = "";
         public bool show_timer { get; set; } = false;

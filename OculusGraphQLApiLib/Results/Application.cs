@@ -8,9 +8,9 @@ namespace OculusGraphQLApiLib.Results
         public string appName { get; set; } = "";
         public AppStoreOffer baseline_offer { get; set; } = null;
         public string canonicalName { get; set; } = "";
-        public OculusUri cover_landscape_image { get; set; } = new OculusUri();
-        public OculusUri cover_portrait_image { get; set; } = new OculusUri();
-        public OculusUri cover_square_image { get; set; } = new OculusUri();
+        public OculusImage cover_landscape_image { get; set; } = new OculusImage();
+        public OculusImage cover_portrait_image { get; set; } = new OculusImage();
+        public OculusImage cover_square_image { get; set; } = new OculusImage();
         public AppStoreOffer current_gift_offer { get; set; } = null;
         public AppStoreOffer current_offer { get; set; } = null;
         public AppStoreTrialOffer current_trial_offer { get; set; } = null;
@@ -32,7 +32,7 @@ namespace OculusGraphQLApiLib.Results
         public Nodes<ReleaseChannel> release_channels { get; set; } = new Nodes<ReleaseChannel>();
         public long? release_date { get; set; } = 0;
         public Nodes<Revision> revisions { get; set; } = new Nodes<Revision>();
-        public List<OculusUri> screenshots { get; set; } = new List<OculusUri>();
+        public List<OculusImage> screenshots { get; set; } = new List<OculusImage>();
         public Edges<Node<AndroidBinary>> supportedBinaries { get; set; } = new Edges<Node<AndroidBinary>>();
         public List<string> supported_hmd_platforms { get; set; } = new List<string>();
         public List<Headset> supported_hmd_platforms_enum
@@ -51,8 +51,20 @@ namespace OculusGraphQLApiLib.Results
         public string website_url { get; set; } = "";
         public AndroidBinary latest_supported_binary { get; set; } = new AndroidBinary();
         public ReleaseChannel viewer_release_channel { get; set; } = new ReleaseChannel();
-
-		public List<IAPEntitlement> active_dlc_entitlements { get; set; } = new List<IAPEntitlement>();
+        public bool is_blocked_by_verification { get; set; } = false;
+        public string release_status { get; set; } = "";
+        public ReleaseStatus release_status_enum
+        {
+            get
+            {
+                return (ReleaseStatus)Enum.Parse(typeof(ReleaseStatus), release_status);
+            }
+        }
+        public bool is_device_targeting_enabled { get; set; } = false;
+        public List<IAPEntitlement> active_dlc_entitlements { get; set; } = new List<IAPEntitlement>();
+        public Nodes<AppStoreOffer> scheduled_offers { get; set; } = new Nodes<AppStoreOffer>();
+        public List<ContextTopic> context_topics { get; set; } = new List<ContextTopic>();
+        public ContextCategory context_category { get; set; } = new ContextCategory();
     }
     public class EdgesPrimaryBinaryApplication : Application
     {
@@ -64,8 +76,30 @@ namespace OculusGraphQLApiLib.Results
         public Nodes<AndroidBinary> primary_binaries { get; set; } = new Nodes<AndroidBinary>();
     }
 
-    public class OculusUri
+    public class OculusImage
     {
+        public string file_name { get; set; } = "";
         public string uri { get; set; } = "";
+        public string id { get; set; } = "";
+        public string image_type { get; set; } = "";
+        public ImageType image_type_enum
+        {
+            get
+            {
+                return (ImageType)Enum.Parse(typeof(ImageType), image_type);
+            }
+        }
+    }
+
+    public enum ImageType
+    {
+        APP_IMG_LOGO_TRANSPARENT,
+        APP_IMG_HERO,
+        APP_IMG_COVER_PORTRAIT,
+        APP_IMG_COVER_SQUARE,
+        APP_IMG_COVER_LANDSCAPE,
+        APP_IMG_SMALL_LANDSCAPE,
+        APP_IMG_ICON,
+        APP_IMG_SCREENSHOT
     }
 }

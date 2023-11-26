@@ -220,6 +220,19 @@ namespace OculusGraphQLApiLib
             c.options.variables = "{\"id\":\"" + appid + "\"}";
             return c;
         }
+        
+        /// <summary>
+        /// GOD DAMN I LOVE THIS ENDPOINT
+        /// </summary>
+        /// <param name="appid"></param>
+        /// <returns></returns>
+        public static GraphQLClient AppDetailsDeveloperAll(string appid)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "6771539532935162";
+            c.options.variables = "{\"applicationID\":\"" + appid + "\"}";
+            return c;
+        }
 
         public static DataItem<Application> GetAppDetail(string id, Headset headset)
         {

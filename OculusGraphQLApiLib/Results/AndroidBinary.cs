@@ -24,6 +24,21 @@ namespace OculusGraphQLApiLib.Results
         private string _platform = "";
 
         public string package_name { get; set; } = null;
+        public List<string> targeted_devices { get; set; } = new List<string>();
+
+        public List<Headset> targeted_device_enum
+        {
+            get
+            {
+                List<Headset> headsets = new List<Headset>();
+                foreach (string s in targeted_devices)
+                {
+                    headsets.Add((Headset)Enum.Parse(typeof(Headset), s));
+                }
+                return headsets;
+            }
+        }
+
         public string file_name { get; set; } = "";
         public string uri { get; set; } = "";
         public string change_log { get { return changeLog; } set { changeLog = value; } }
@@ -93,8 +108,8 @@ namespace OculusGraphQLApiLib.Results
 
         //public EdgesPrimaryBinaryApplication binary_application { get; set; } = new EdgesPrimaryBinaryApplication();
         public string __isAppBinary { get; set; } = "";
-        //public Edges<AssetFile> asset_files { get; set; } = ;
-        //public Edges<DebugSymbol> debug_symbols { get; set; } = ;
+        //public Edges<AssetFile> asset_files { get; set; } = new Edges<AssetFile>();
+        public Edges<DebugSymbol> debug_symbols { get; set; } = new Edges<DebugSymbol>();
         public string __isAppBinaryWithFileAsset { get; set; } = "";
         public long version_code { get { return versionCode; } set { versionCode = value; } }
         public long versionCode { get; set; } = 0;
@@ -104,10 +119,30 @@ namespace OculusGraphQLApiLib.Results
         public Edges<Node<AppItemBundle>> firstIapItems { get; set; } = new Edges<Node<AppItemBundle>>();
         public Nodes<AssetFile> asset_files { get; set; } = new Nodes<AssetFile>();
         public AssetFile obb_binary { get; set; } = null;
+        public List<TargetableDevicesLockInfo> targetable_devices_lock_info { get; set; } = new List<TargetableDevicesLockInfo>();
 
         public override string ToString()
         {
             return "Version: " + version + " (" + id + ")\nChangelog: " + change_log;
+        }
+        public string release_status { get; set; } = "";
+
+        public ReleaseStatus release_status_enum
+        {
+            get
+            {
+                return (ReleaseStatus)Enum.Parse(typeof(ReleaseStatus), release_status);
+            }
+        }
+
+        public string status { get; set; } = "";
+
+        public BinaryStatus status_enum
+        {
+            get
+            {
+                return (BinaryStatus)Enum.Parse(typeof(BinaryStatus), status);
+            }
         }
     }
 }
