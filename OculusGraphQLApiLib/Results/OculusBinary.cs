@@ -28,7 +28,7 @@ namespace OculusGraphQLApiLib.Results
         public string package_name { get; set; } = null;
         public List<string> targeted_devices { get; set; } = new List<string>();
 
-        public List<Headset> targeted_device_enum
+        public List<Headset> targeted_devices_enum
         {
             get
             {
