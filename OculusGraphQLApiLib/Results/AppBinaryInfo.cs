@@ -18,6 +18,6 @@ namespace OculusGraphQLApiLib.Results
 
     public class Binary
     {
-        public AndroidBinary binary { get; set; } = new AndroidBinary();
+        public OculusBinary binary { get; set; } = new OculusBinary();
     }
 }

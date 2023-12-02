@@ -1,8 +1,6 @@
 namespace OculusGraphQLApiLib.Results;
 
-public enum ReleaseStatus
+public enum ApplicationStatus
 {
     RELEASED,
-    PENDING,
-    UNKNOWN = -1
 }

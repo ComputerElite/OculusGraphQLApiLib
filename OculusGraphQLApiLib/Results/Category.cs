@@ -1,8 +1,8 @@
 namespace OculusGraphQLApiLib.Results;
 
-public enum ReleaseStatus
+public enum Category
 {
-    RELEASED,
-    PENDING,
+    GAMES,
+    EARLY_ACCESS,
     UNKNOWN = -1
 }

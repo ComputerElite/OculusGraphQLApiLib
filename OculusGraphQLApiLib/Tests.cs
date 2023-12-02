@@ -79,5 +79,12 @@ namespace OculusGraphQLApiLib
             Console.WriteLine(Serialize(GraphQLClient.VersionHistory(appid)));
             Stop();
         }
+
+        public static void AppDetailsDeveloperAll()
+        {
+            Start();
+            Console.WriteLine(Serialize(GraphQLClient.AppSubmission("6356084741157918")));
+            Stop();
+        }
     }
 }

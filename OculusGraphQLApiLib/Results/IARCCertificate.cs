@@ -1,8 +1,6 @@
 namespace OculusGraphQLApiLib.Results;
 
-public class ContextTopic
+public class IARCCertificate
 {
-    public string topic_name { get; set; } = "";
-
     public string id { get; set; } = "";
 }

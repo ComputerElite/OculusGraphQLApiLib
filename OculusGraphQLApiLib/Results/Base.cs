@@ -88,5 +88,8 @@ namespace OculusGraphQLApiLib.Results
         AppItemBundle,
         IAPItem,
         AppStoreAllAppsSection,
+        AppStoreOffer,
+        XOCApplicationPDPMetadata,
+        ApplicationSubmission
     }
 }

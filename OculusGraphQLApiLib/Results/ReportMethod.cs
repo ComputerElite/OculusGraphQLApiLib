@@ -1,8 +1,8 @@
 namespace OculusGraphQLApiLib.Results;
 
-public enum ReleaseStatus
+public enum ReportMethod
 {
-    RELEASED,
-    PENDING,
+    E2E,
+    PLATFORM,
     UNKNOWN = -1
 }

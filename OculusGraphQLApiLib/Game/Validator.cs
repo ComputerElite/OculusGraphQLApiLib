@@ -44,7 +44,7 @@ namespace OculusGraphQLApiLib.Game
             Logger.Log("No binary id passed, getting it from the Oculus API");
             Console.WriteLine("No binary id passed, getting it from the Oculus API. Please wait a second");
             Data<NodesPrimaryBinaryApplication> versionS = GraphQLClient.AllVersionsOfApp(manifest.appId);
-            foreach (AndroidBinary v in versionS.data.node.primary_binaries.nodes)
+            foreach (OculusBinary v in versionS.data.node.primary_binaries.nodes)
             {
                 if (v.versionCode == manifest.versionCode)
                 {

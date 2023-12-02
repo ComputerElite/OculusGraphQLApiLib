@@ -1,8 +1,7 @@
 namespace OculusGraphQLApiLib.Results;
 
-public enum ReleaseStatus
+public enum PlayArea
 {
-    RELEASED,
-    PENDING,
+    MOVEMENT,
     UNKNOWN = -1
 }

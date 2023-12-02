@@ -29,6 +29,6 @@ namespace OculusGraphQLApiLib.Results
         }
         public string squareImage { get; set; } = "";
         public string id { get; set; } = "";
-        public Edges<Node<AndroidBinary>> binaries { get; set; } = new Edges<Node<AndroidBinary>>();
+        public Edges<Node<OculusBinary>> binaries { get; set; } = new Edges<Node<OculusBinary>>();
     }
 }

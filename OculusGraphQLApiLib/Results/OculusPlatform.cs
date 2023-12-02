@@ -1,8 +1,8 @@
 namespace OculusGraphQLApiLib.Results;
 
-public enum ReleaseStatus
+public enum OculusPlatform
 {
-    RELEASED,
-    PENDING,
+    ANDROID_6DOF,
+    PC,
     UNKNOWN = -1
 }

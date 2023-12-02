@@ -26,14 +26,30 @@ namespace OculusGraphQLApiLib.Results
         public bool is_enterprise_enabled { get; set; } = false;
         public Organization organization { get; set; } = new Organization();
         public string platform { get; set; } = "";
+        public OculusPlatform platform_enum
+        {
+            get
+            {
+                if(String.IsNullOrEmpty(platform)) return OculusPlatform.UNKNOWN;
+                return (OculusPlatform)Enum.Parse(typeof(OculusPlatform), platform);
+            }
+        }
         public string publisher_name { get; set; } = "";
         public double? quality_rating_aggregate { get; set; } = 0.0;
         public List<QualityRating> quality_rating_history_aggregate_all { get; set; } = new List<QualityRating>();
         public Nodes<ReleaseChannel> release_channels { get; set; } = new Nodes<ReleaseChannel>();
         public long? release_date { get; set; } = 0;
+        public DateTime releaseDate
+        {
+            get
+            {
+                if(release_date == null) return DateTime.MinValue;
+                return DateTimeOffset.FromUnixTimeSeconds((long)release_date).DateTime;
+            }
+        }
         public Nodes<Revision> revisions { get; set; } = new Nodes<Revision>();
         public List<OculusImage> screenshots { get; set; } = new List<OculusImage>();
-        public Edges<Node<AndroidBinary>> supportedBinaries { get; set; } = new Edges<Node<AndroidBinary>>();
+        public Edges<Node<OculusBinary>> supportedBinaries { get; set; } = new Edges<Node<OculusBinary>>();
         public List<string> supported_hmd_platforms { get; set; } = new List<string>();
         public List<Headset> supported_hmd_platforms_enum
         {
@@ -49,7 +65,7 @@ namespace OculusGraphQLApiLib.Results
         }
         public bool viewer_has_preorder { get; set; } = false;
         public string website_url { get; set; } = "";
-        public AndroidBinary latest_supported_binary { get; set; } = new AndroidBinary();
+        public OculusBinary latest_supported_binary { get; set; } = new OculusBinary();
         public ReleaseChannel viewer_release_channel { get; set; } = new ReleaseChannel();
         public bool is_blocked_by_verification { get; set; } = false;
         public string release_status { get; set; } = "";
@@ -57,6 +73,7 @@ namespace OculusGraphQLApiLib.Results
         {
             get
             {
+                if(String.IsNullOrEmpty(release_status)) return ReleaseStatus.UNKNOWN;
                 return (ReleaseStatus)Enum.Parse(typeof(ReleaseStatus), release_status);
             }
         }
@@ -65,15 +82,37 @@ namespace OculusGraphQLApiLib.Results
         public Nodes<AppStoreOffer> scheduled_offers { get; set; } = new Nodes<AppStoreOffer>();
         public List<ContextTopic> context_topics { get; set; } = new List<ContextTopic>();
         public ContextCategory context_category { get; set; } = new ContextCategory();
+        public List<string> user_interaction_modes { get; set; } = new List<string>();
+        public List<UserInteractionMode> user_interaction_modes_enum
+        {
+            get
+            {
+                List<UserInteractionMode> userInteractionModes = new List<UserInteractionMode>();
+                foreach (string s in user_interaction_modes)
+                {
+                    userInteractionModes.Add((UserInteractionMode)Enum.Parse(typeof(UserInteractionMode), s));
+                }
+                return userInteractionModes;
+            }
+        }
+        public bool is_quest_for_business { get; set; } = false;
+        public ApplicationGrouping grouping { get; set; } = new ApplicationGrouping();
+        public bool is_test { get; set; } = false;
+        public bool is_trial_offer_valid { get; set; } = false;
+        public Nodes<ApplicationRevision> firstRevision { get; set; } = new Nodes<ApplicationRevision>();
+        public Nodes<ApplicationRevision> lastRevision { get; set; } = new Nodes<ApplicationRevision>();
+        public Nodes<AppStoreOffer> firstOffer { get; set; } = new Nodes<AppStoreOffer>();
+        public bool is_for_oculus_keys_only { get; set; } = false;
+        
     }
     public class EdgesPrimaryBinaryApplication : Application
     {
-        public Edges<Node<AndroidBinary>> primary_binaries { get; set; } = new Edges<Node<AndroidBinary>>();
+        public Edges<Node<OculusBinary>> primary_binaries { get; set; } = new Edges<Node<OculusBinary>>();
     }
 
     public class NodesPrimaryBinaryApplication : Application
     {
-        public Nodes<AndroidBinary> primary_binaries { get; set; } = new Nodes<AndroidBinary>();
+        public Nodes<OculusBinary> primary_binaries { get; set; } = new Nodes<OculusBinary>();
     }
 
     public class OculusImage
@@ -86,6 +125,7 @@ namespace OculusGraphQLApiLib.Results
         {
             get
             {
+                if (image_type == "") return ImageType.UNKNOWN;
                 return (ImageType)Enum.Parse(typeof(ImageType), image_type);
             }
         }
@@ -100,6 +140,7 @@ namespace OculusGraphQLApiLib.Results
         APP_IMG_COVER_LANDSCAPE,
         APP_IMG_SMALL_LANDSCAPE,
         APP_IMG_ICON,
-        APP_IMG_SCREENSHOT
+        APP_IMG_SCREENSHOT,
+        UNKNOWN
     }
 }

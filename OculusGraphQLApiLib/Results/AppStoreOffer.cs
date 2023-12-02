@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace OculusGraphQLApiLib.Results
 {
-    public class AppStoreOffer
+    public class AppStoreOffer : GraphQLBase
     {
         public string status { get; set; } = "";
         public OfferStatus status_enum
         {
             get
             {
-                return (OfferStatus)Enum.Parse(typeof(OfferStatus), status);
+                if (status == "") return OfferStatus.UNKNOWN;
+                return (OfferStatus)Enum.Parse(typeof(OfferStatus), status, true);
             }
         }
         public long end_time { get; set; } = 0;

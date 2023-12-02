@@ -1,8 +1,7 @@
 namespace OculusGraphQLApiLib.Results;
 
-public enum ReleaseStatus
+public enum InternetConnection
 {
-    RELEASED,
-    PENDING,
+    NOT_REQUIRED,
     UNKNOWN = -1
 }

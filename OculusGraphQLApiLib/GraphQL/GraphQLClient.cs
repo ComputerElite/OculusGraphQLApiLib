@@ -226,12 +226,27 @@ namespace OculusGraphQLApiLib
         /// </summary>
         /// <param name="appid"></param>
         /// <returns></returns>
-        public static GraphQLClient AppDetailsDeveloperAll(string appid)
+        public static Data<Application> AppDetailsDeveloperAll(string appid)
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "6771539532935162";
             c.options.variables = "{\"applicationID\":\"" + appid + "\"}";
-            return c;
+            return JsonSerializer.Deserialize<Data<Application>>(c.Request(), jsonOptions);
+        }
+        
+        public static Data<PDPMetadata> PDPMetadata(string pdpMetadataId)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "6759554484128015";
+            c.options.variables = "{\"pdpMetadataID\":\"" + pdpMetadataId + "\"}";
+            return JsonSerializer.Deserialize<Data<PDPMetadata>>(c.Request(), jsonOptions);
+        }
+        public static Data<ApplicationRevision> AppSubmission(string submissionId)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "6848217698591088";
+            c.options.variables = "{\"submissionID\":\"" + submissionId + "\"}";
+            return JsonSerializer.Deserialize<Data<ApplicationRevision>>(c.Request(), jsonOptions);
         }
 
         public static DataItem<Application> GetAppDetail(string id, Headset headset)
@@ -250,18 +265,18 @@ namespace OculusGraphQLApiLib
             return JsonSerializer.Deserialize<Data<Application>>(c.Request(), jsonOptions);
         }
 
-        public static Data<AndroidBinary> GetBinaryDetails(string binaryId)
+        public static Data<OculusBinary> GetBinaryDetails(string binaryId)
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "4734929166632773";
             c.options.variables = "{\"binaryID\":\"" + binaryId + "\"}";
-            return JsonSerializer.Deserialize<Data<AndroidBinary>>(c.Request(), jsonOptions);
+            return JsonSerializer.Deserialize<Data<OculusBinary>>(c.Request(), jsonOptions);
         }
 
         public static PlainData<AppBinaryInfoContainer> GetAssetFiles(string appId, long versionCode)
         {
             GraphQLClient c = OculusTemplate();
-            c.options.doc = "query ($params: AppBinaryInfoArgs!) { app_binary_info(args: $params) { info { binary { ... on AndroidBinary { id package_name version_code asset_files { edges { node { ... on AssetFile {  file_name uri size  } } } } } } } }}";
+            c.options.doc = "query ($params: AppBinaryInfoArgs!) { app_binary_info(args: $params) { info { binary { ... on OculusBinary { id package_name version_code asset_files { edges { node { ... on AssetFile {  file_name uri size  } } } } } } } }}";
             c.options.variables = "{\"params\":{\"app_params\":[{\"app_id\":\"" + appId + "\",\"version_code\":\"" + versionCode + "\"}]}}";
             return JsonSerializer.Deserialize<PlainData<AppBinaryInfoContainer>>(c.Request(), jsonOptions);
         }

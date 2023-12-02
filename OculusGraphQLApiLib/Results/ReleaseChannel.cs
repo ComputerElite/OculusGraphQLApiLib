@@ -2,7 +2,7 @@
 {
     public class ReleaseChannel : ReleaseChannelWithoutLatestSupportedBinary
     {
-        public AndroidBinary latest_supported_binary { get; set; } = new AndroidBinary();
+        public OculusBinary latest_supported_binary { get; set; } = new OculusBinary();
         
     }
     

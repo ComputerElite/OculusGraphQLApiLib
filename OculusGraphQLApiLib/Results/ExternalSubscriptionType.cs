@@ -1,8 +1,7 @@
 namespace OculusGraphQLApiLib.Results;
 
-public enum OfferStatus
+public enum ExternalSubscriptionType
 {
-    PUBLISHED,
-    PENDING,
+    NOT_REQUIRED,
     UNKNOWN
 }
