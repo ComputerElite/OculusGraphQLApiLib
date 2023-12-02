@@ -103,6 +103,7 @@ namespace OculusGraphQLApiLib.Results
         public Nodes<ApplicationRevision> lastRevision { get; set; } = new Nodes<ApplicationRevision>();
         public Nodes<AppStoreOffer> firstOffer { get; set; } = new Nodes<AppStoreOffer>();
         public bool is_for_oculus_keys_only { get; set; } = false;
+        public Nodes<ApplicationRevision> revisionsIncludingVariantMetadataRevisions { get; set; } = new Nodes<ApplicationRevision>();
         
     }
     public class EdgesPrimaryBinaryApplication : Application

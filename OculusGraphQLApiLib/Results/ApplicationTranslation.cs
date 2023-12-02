@@ -10,7 +10,7 @@ public class ApplicationTranslation
     public List<OculusImage> screenshots { get; set; } = new();
     public OculusImage video_trailer { get; set; } = new();
     public OculusImage video_trailer_thumbnail { get; set; } = new();
-    public string displayName { get; set; } = "";
+    public string display_name { get; set; } = "";
     public Nodes<OculusImage> images { get; set; } = new();
     public List<string> keywords { get; set; } = new();
     public string long_description { get; set; } = "";

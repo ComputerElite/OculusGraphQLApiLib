@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using ComputerUtils.VarUtils;
 
 namespace OculusGraphQLApiLib.Results
 {
@@ -101,6 +103,8 @@ namespace OculusGraphQLApiLib.Results
             }
         }
 
+        public List<string> permissions { get; set; } = new List<string>();
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// WARNING!!! IN CASE SOMETHING DOESN'T WORK SOMEWHERE ADD binary_application BACK IN AND FIX RECURSION ///
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +116,15 @@ namespace OculusGraphQLApiLib.Results
         public string __isAppBinaryWithFileAsset { get; set; } = "";
         public long version_code { get { return versionCode; } set { versionCode = value; } }
         public long versionCode { get; set; } = 0;
-        public long created_date { get; set; } = 0;
+        public long? created_date { get; set; } = 0;
+        public DateTime created_date_datetime
+        {
+            get
+            {
+                if(created_date == null) return DateTime.MinValue;
+                return TimeConverter.UnixTimeStampToDateTime(created_date);
+            }
+        }
         public Nodes<ReleaseChannel> binary_release_channels { get; set; } = null;
         public Edges<Node<AppItemBundle>> lastIapItems { get; set; } = new Edges<Node<AppItemBundle>>();
         public Edges<Node<AppItemBundle>> firstIapItems { get; set; } = new Edges<Node<AppItemBundle>>();
@@ -145,5 +157,7 @@ namespace OculusGraphQLApiLib.Results
                 return (BinaryStatus)Enum.Parse(typeof(BinaryStatus), status);
             }
         }
+        
+        public bool is_pre_download_enabled { get; set; } = false;
     }
 }

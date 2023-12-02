@@ -43,6 +43,15 @@ public class ApplicationRevision
             return (ApplicationRevisionStatus)Enum.Parse(typeof(ApplicationRevisionStatus), status);
         }
     }
+    public string release_status { get; set; } = "";
+    public ReleaseStatus release_status_enum
+    {
+        get
+        {
+            if(String.IsNullOrEmpty(release_status)) return ReleaseStatus.UNKNOWN;
+            return (ReleaseStatus)Enum.Parse(typeof(ReleaseStatus), release_status);
+        }
+    }
     public string release_type { get; set; } = "";
     public ReleaseType release_type_enum
     {

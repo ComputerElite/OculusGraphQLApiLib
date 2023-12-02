@@ -9,10 +9,11 @@ public class PDPMetadata
     public IARCCertificate iarc_cert{ get; set; } = new IARCCertificate();
     public Nodes<ApplicationTranslation> translations { get; set; } = new Nodes<ApplicationTranslation>();
     public string developer_name { get; set; } = "";
-    public string developer_privacy_policy_url { get; set; } = "";
-    public string developer_terms_of_service_url { get; set; } = "";
+    public string? developer_privacy_policy_url { get; set; } = null;
+    public string? developer_terms_of_service_url { get; set; } = null;
     public string publisher_name { get; set; } = "";
-    public string website_url { get; set; } = "";
+    public string? website_url { get; set; } = null;
+    public string? support_website_url { get; set; } = null;
     public string category { get; set; } = "";
     public Category category_enum
     {

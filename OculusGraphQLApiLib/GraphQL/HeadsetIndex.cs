@@ -63,6 +63,12 @@ public class HeadsetIndex
             headset = Headset.GEARVR,
             binaryType = HeadsetBinaryType.AndroidBinary,
             group = HeadsetGroup.GearVR
+        },
+        new()
+        {
+            headset = Headset.FUTURE_DEVICES,
+            binaryType = HeadsetBinaryType.AndroidBinary,
+            group = HeadsetGroup.Quest
         }
     };
 
