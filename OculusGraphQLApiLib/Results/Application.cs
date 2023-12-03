@@ -104,6 +104,21 @@ namespace OculusGraphQLApiLib.Results
         public Nodes<AppStoreOffer> firstOffer { get; set; } = new Nodes<AppStoreOffer>();
         public bool is_for_oculus_keys_only { get; set; } = false;
         public Nodes<ApplicationRevision> revisionsIncludingVariantMetadataRevisions { get; set; } = new Nodes<ApplicationRevision>();
+        public List<string> share_capabilities { get; set; } = null;
+        public List<ShareCapability> share_capabilities_enum
+        {
+            get
+            {
+                if (share_capabilities == null) return new List<ShareCapability>();
+                List<ShareCapability> shareCapabilities = new List<ShareCapability>();
+                foreach (string s in share_capabilities)
+                {
+                    shareCapabilities.Add((ShareCapability)Enum.Parse(typeof(ShareCapability), s));
+                }
+                return shareCapabilities;
+            }
+        }
+        
         
     }
     public class EdgesPrimaryBinaryApplication : Application

@@ -142,19 +142,36 @@ namespace OculusGraphQLApiLib
 			c.options.variables = "{\"input\":{\"client_mutation_id\":\"2\",\"app_id\":\"" + appId + "\",\"release_channel_id\":\"" + releaseChannelId + "\"}}";
 			return JsonSerializer.Deserialize<ReleaseChannelSettingWrapper>(c.Request(), jsonOptions);
 		}
+        
+        public static Data<Application?> GetAppSharingCapabilities(string appId)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "6362663970520085";
+            c.options.variables = "{\"applicationID\":\"" + appId + "\"}";
+            return JsonSerializer.Deserialize<Data<Application?>>(c.Request(), jsonOptions);
+        }
 
 		public static Data<AppStoreAllAppsSection> AllApps(Headset headset, string cursor = null, int maxApps = 500)
         {
             GraphQLClient c = OculusTemplate();
-            c.options.doc_id = "3821696797949516";
+            c.options.doc_id = "6318857928214261";
             string id = "";
             switch(headset)
             {
                 case Headset.MONTEREY:
-                    id = "1888816384764129";
+                    id = "391914765228253";
                     break;
                 case Headset.HOLLYWOOD:
-                    id = "1888816384764129";
+                    id = "391914765228253";
+                    break;
+                case Headset.PANTHER:
+                    id = "391914765228253";
+                    break;
+                case Headset.EUREKA:
+                    id = "391914765228253";
+                    break;
+                case Headset.SEACLIFF:
+                    id = "391914765228253";
                     break;
                 case Headset.RIFT:
                     id = "1736210353282450";
@@ -169,7 +186,7 @@ namespace OculusGraphQLApiLib
                     id = "174868819587665";
                     break;
             }
-            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":null,\"sectionItemCount\":" + maxApps + ",\"sectionCursor\":" + (cursor == null ? "null" : "\"" + cursor + "\"") + ",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\"}";
+            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":[],\"itemCount\":" + maxApps + ",\"cursor\":" + (cursor == null ? "null" : "\"" + cursor + "\"") + ",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\"}";
             return JsonSerializer.Deserialize<Data<AppStoreAllAppsSection>>(c.Request());
         }
 
