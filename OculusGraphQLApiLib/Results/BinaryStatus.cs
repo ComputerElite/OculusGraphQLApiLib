@@ -2,7 +2,7 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum BinaryStatus
 {
-    APPROVED,
-    DRAFT,
-    UNKNOWN
+    UNKNOWN = -1,
+    DRAFT = 0,
+    APPROVED = 1,
 }

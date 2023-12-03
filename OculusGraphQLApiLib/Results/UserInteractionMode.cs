@@ -2,6 +2,7 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum UserInteractionMode
 {
-    SINGLE_USER,
-    MULTI_USER
+    UNKNOWN = -1,
+    SINGLE_USER = 0,
+    MULTI_USER = 1
 }

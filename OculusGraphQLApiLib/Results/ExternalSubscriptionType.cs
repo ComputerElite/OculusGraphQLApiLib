@@ -2,6 +2,6 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum ExternalSubscriptionType
 {
-    NOT_REQUIRED,
-    UNKNOWN
+    UNKNOWN = -1,
+    NOT_REQUIRED = 0,
 }

@@ -2,7 +2,7 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum ShareCapability
 {
-    SCREENRECORDING,
-    VRCASTING,
-    UNKNOWN = -1
+    UNKNOWN = -1,
+    SCREENRECORDING = 0,
+    VRCASTING = 1,
 }

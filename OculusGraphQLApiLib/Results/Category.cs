@@ -2,7 +2,7 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum Category
 {
-    GAMES,
-    EARLY_ACCESS,
-    UNKNOWN = -1
+    UNKNOWN = -1,
+    GAMES = 0,
+    EARLY_ACCESS = 1,
 }

@@ -2,6 +2,7 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum SupportedPlayerMode
 {
-    STANDING,
-    ROOM_SCALE
+    UNKNOWN = -1,
+    STANDING = 0,
+    ROOM_SCALE = 1
 }

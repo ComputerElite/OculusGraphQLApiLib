@@ -2,5 +2,6 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum SupportedInputDevice
 {
-    OCULUS_TOUCH
+    UNKNOWN = -1,
+    OCULUS_TOUCH = 0
 }
