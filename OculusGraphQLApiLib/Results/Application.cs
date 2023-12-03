@@ -39,11 +39,11 @@ namespace OculusGraphQLApiLib.Results
         public List<QualityRating> quality_rating_history_aggregate_all { get; set; } = new List<QualityRating>();
         public Nodes<ReleaseChannel> release_channels { get; set; } = new Nodes<ReleaseChannel>();
         public long? release_date { get; set; } = 0;
-        public DateTime releaseDate
+        public DateTime? releaseDate
         {
             get
             {
-                if(release_date == null) return DateTime.MinValue;
+                if(release_date == null) return null;
                 return DateTimeOffset.FromUnixTimeSeconds((long)release_date).DateTime;
             }
         }

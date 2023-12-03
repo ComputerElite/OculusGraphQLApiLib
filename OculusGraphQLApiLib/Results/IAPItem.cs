@@ -9,7 +9,7 @@ namespace OculusGraphQLApiLib.Results
 {
     public class IAPItem : GraphQLBase
     {
-        public AppStoreOffer current_offer { get; set; } = new AppStoreOffer();
+        public AppStoreOffer? current_offer { get; set; } = new AppStoreOffer();
         public string display_name { get; set; } = "";
         public string display_short_description { get; set; } = "";
         public string file_name { get; set; }
@@ -31,11 +31,11 @@ namespace OculusGraphQLApiLib.Results
         public ApplicationGrouping app_grouping { get; set; } = new ApplicationGrouping();
         public Nodes<IAPRevision> revisions { get; set; } = new Nodes<IAPRevision>();
         public IAPRevision latest_revision { get; set; } = new IAPRevision();
-        public DateTime release_date_datetime
+        public DateTime? release_date_datetime
         {
             get
             {
-                if(release_date == null) return DateTime.MinValue;
+                if(release_date == null) return null;
                 return TimeConverter.UnixTimeStampToDateTime(release_date);
             }
         }

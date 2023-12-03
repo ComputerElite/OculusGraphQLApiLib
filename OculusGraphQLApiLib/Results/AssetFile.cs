@@ -14,6 +14,7 @@ namespace OculusGraphQLApiLib.Results
         public string size { get; set; } = "0";
         public string id { get; set; } = "";
         public bool is_required { get; set; } = false;
+        public bool? is_segmented { get; set; } = null;
         public BinaryApplication binary_application { get; set; } = new BinaryApplication();
         public string platform { get; set; } = "";
         public OculusPlatform platform_enum

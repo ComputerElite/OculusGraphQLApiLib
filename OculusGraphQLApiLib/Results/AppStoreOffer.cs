@@ -22,7 +22,7 @@ namespace OculusGraphQLApiLib.Results
         public bool show_timer { get; set; } = false;
         public AppStoreOfferPrice price { get; set; } = new AppStoreOfferPrice();
         public string promo_benefit { get; set; } = null;
-        public AppStoreOfferPrice strikethrough_price { get; set; } = new AppStoreOfferPrice();
+        public AppStoreOfferPrice strikethrough_price { get; set; } = null;
     }
     public class AppStoreTrialOffer
     {
