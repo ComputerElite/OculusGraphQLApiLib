@@ -4,5 +4,6 @@ public enum ReleaseType
 {
     UNKNOWN = -1,
     ON_APPROVAL,
-    MANAGED
+    MANAGED,
+    SCHEDULED
 }

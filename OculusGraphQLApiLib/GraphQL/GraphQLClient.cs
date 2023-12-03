@@ -14,7 +14,8 @@ namespace OculusGraphQLApiLib
         public string uri { get; set; } = "";
         public GraphQLOptions options { get; set; } = new GraphQLOptions();
         public const string oculusUri = "https://graph.oculus.com/graphql";
-        public static string oculusStoreToken = "OC|752908224809889|";
+        public static string userToken = "";
+        public const string oculusStoreToken = "OC|752908224809889|";
         public static string forcedLocale = "";
         public static bool throwException = true;
         public static bool log = true;
@@ -149,6 +150,52 @@ namespace OculusGraphQLApiLib
             c.options.doc_id = "6362663970520085";
             c.options.variables = "{\"applicationID\":\"" + appId + "\"}";
             return JsonSerializer.Deserialize<Data<Application?>>(c.Request(), jsonOptions);
+        }
+        public static Data<ApplicationGrouping?> GetDLCsDeveloper(string groupingId, string cursor = null, int count = 50)
+        {
+            GraphQLClient c = OculusTemplate();
+            if (cursor == null)
+            {
+                c.options.doc_id = "6980015785377989";
+                c.options.variables =
+                    "{\"applicationGroupingID\":\"" + groupingId +
+                    "\",\"isShownInStore\":null,\"skuOrDisplayNameFilter\":\"\"}";
+                return JsonSerializer.Deserialize<Data<ApplicationGrouping?>>(c.Request(), jsonOptions);
+            }
+            else
+            {
+                
+                c.options.doc_id = "6895974417154683";
+                c.options.variables =
+                    "{\"after\":\"" + cursor + "\",\"first\":" + count + ",\"id\":\"" + groupingId +
+                    "\",\"isShownInStore\":null,\"skuOrDisplayNameFilter\":\"\"}";
+                return JsonSerializer.Deserialize<Data<ApplicationGrouping?>>(c.Request(), jsonOptions);
+            }
+        }
+
+        public static Data<Application> GetAchievements(string appId)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "6783430901678561";
+            c.options.variables = "{\"applicationID\":\"" + appId + "\"}";
+            return JsonSerializer.Deserialize<Data<Application>>(c.Request(), jsonOptions);
+        }
+        
+        public static Data<AchievementDefinition> GetAchievement(string achievementId)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "6060216934017996";
+            c.options.variables = "{\"achievementID\":\"" + achievementId + "\"}";
+            return JsonSerializer.Deserialize<Data<AchievementDefinition>>(c.Request(), jsonOptions);
+        }
+        
+        public static Data<ApplicationForApplicationGroupingNodes> GetAddOnDeveloper(string addOnId, string applicationId)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "6596628703765622";
+            c.options.variables =
+                "{\"addOnID\":\"" + addOnId + "\",\"applicationID\":\"" + applicationId + "\"}";
+            return JsonSerializer.Deserialize<Data<ApplicationForApplicationGroupingNodes>>(c.Request(), jsonOptions);
         }
 
 		public static Data<AppStoreAllAppsSection> AllApps(Headset headset, string cursor = null, int maxApps = 500)
@@ -310,7 +357,7 @@ namespace OculusGraphQLApiLib
         {
             GraphQLClient c = new GraphQLClient(oculusUri);
             GraphQLOptions o = new GraphQLOptions();
-            o.access_token = oculusStoreToken;
+            o.access_token = userToken != "" ? userToken : oculusStoreToken;
             c.options = o;
             return c;
         }

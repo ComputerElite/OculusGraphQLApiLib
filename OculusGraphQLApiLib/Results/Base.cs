@@ -70,6 +70,7 @@ namespace OculusGraphQLApiLib.Results
     {
         public string end_cursor { get; set; } = "";
         public string start_cursor { get; set; } = "";
+        public bool has_next_page { get; set; } = false;
     }
 
     public class Node<T>

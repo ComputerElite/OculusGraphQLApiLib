@@ -157,6 +157,13 @@ namespace OculusGraphQLApiLib.Results
         APP_IMG_SMALL_LANDSCAPE,
         APP_IMG_ICON,
         APP_IMG_SCREENSHOT,
-        UNKNOWN
+        ACHIEVEMENT_IMG_LOCKED,
+        ACHIEVEMENT_IMG_UNLOCKED,
+        UNKNOWN = -1
+    }
+    
+    public class ApplicationForApplicationGroupingNodes : Application
+    {
+        public ApplicationGroupingNodes grouping { get; set; } = new ApplicationGroupingNodes();
     }
 }

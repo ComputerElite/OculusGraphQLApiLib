@@ -6,6 +6,7 @@ public class BinaryApplication : GraphQLBase
 {
     public string id { get; set; } = "";
     public bool is_concept { get; set; } = false;
+    public bool is_quest_for_business { get; set; } = false;
     public string release_status { get; set; } = "";
     public ReleaseStatus release_status_enum
     {

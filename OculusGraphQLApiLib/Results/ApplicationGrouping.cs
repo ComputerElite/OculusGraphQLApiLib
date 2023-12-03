@@ -16,4 +16,12 @@ public class ApplicationGrouping
             return (ReportMethod)Enum.Parse(typeof(ReportMethod), report_method);
         }
     }
+    public Nodes<AchievementDefinition> achievement_definitions { get; set; } = new Nodes<AchievementDefinition>();
+    
+    public Edges<Node<IAPItem>> add_ons { get; set; } = new Edges<Node<IAPItem>>();
+}
+
+public class ApplicationGroupingNodes : ApplicationGrouping
+{
+    public Nodes<IAPItem> add_ons { get; set; } = new Nodes<IAPItem>();
 }
