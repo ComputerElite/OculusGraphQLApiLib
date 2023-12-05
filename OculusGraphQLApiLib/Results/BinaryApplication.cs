@@ -16,5 +16,5 @@ public class BinaryApplication : GraphQLBase
             return (ReleaseStatus)Enum.Parse(typeof(ReleaseStatus), release_status);
         }
     }
-    public bool is_blocked_by_verification { get; set; } = false;
+    public bool? is_blocked_by_verification { get; set; } = null;
 }

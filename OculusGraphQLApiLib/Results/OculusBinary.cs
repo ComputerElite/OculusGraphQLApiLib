@@ -27,6 +27,9 @@ namespace OculusGraphQLApiLib.Results
 
         public string package_name { get; set; } = null;
         public List<string> targeted_devices { get; set; } = new List<string>();
+        public int? min_android_sdk_version { get; set; } = null;
+        public int? max_android_sdk_version { get; set; } = null;
+        public int? target_android_sdk_version { get; set; } = null;
 
         public List<Headset> targeted_devices_enum
         {

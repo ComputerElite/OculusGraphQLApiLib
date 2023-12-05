@@ -56,13 +56,13 @@ public class HeadsetIndex
         {
             headset = Headset.PACIFIC,
             binaryType = HeadsetBinaryType.AndroidBinary,
-            group = HeadsetGroup.Go
+            group = HeadsetGroup.GoAndGearVr
         },
         new()
         {
             headset = Headset.GEARVR,
             binaryType = HeadsetBinaryType.AndroidBinary,
-            group = HeadsetGroup.GearVR
+            group = HeadsetGroup.GoAndGearVr
         },
         new()
         {
@@ -140,6 +140,5 @@ public enum HeadsetGroup
     Unknown = -1,
     Quest = 0,
     PCVR = 1,
-    Go = 2,
-    GearVR = 3,
+    GoAndGearVr = 2
 }

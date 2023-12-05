@@ -3,5 +3,6 @@ namespace OculusGraphQLApiLib.Results;
 public enum PlayArea
 {
     UNKNOWN = -1,
-    MOVEMENT = 0,
+    NO_MOVEMENT = 0,
+    MOVEMENT = 1,
 }

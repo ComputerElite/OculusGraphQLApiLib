@@ -15,6 +15,18 @@ public class AchievementDefinition
     public string title { get; set; } = "";
     public OculusImage unlocked_image { get; set; } = new OculusImage();
     public string achievement_type { get; set; } = "";
+    public long? bitfield_length { get; set; } = null;
+    public string? target { get; set; } = null;
+
+    public long? target_numerical
+    {
+        get
+        {
+            if (target == null) return null;
+            return long.Parse(target);
+        }
+    }
+
     public AchievementType achievement_type_enum
     {
         get

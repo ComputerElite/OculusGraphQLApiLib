@@ -172,6 +172,27 @@ namespace OculusGraphQLApiLib
                 return JsonSerializer.Deserialize<Data<ApplicationGrouping?>>(c.Request(), jsonOptions);
             }
         }
+        
+        public static Data<ApplicationGrouping?> GetCustomItems(string applicationid, string cursor = null, int count = 50)
+        {
+            GraphQLClient c = OculusTemplate();
+            if (cursor == null)
+            {
+                c.options.doc_id = "7398229556870587";
+                c.options.variables =
+                    "{\"applicationID\":\"" + applicationid + "\"}";
+                return JsonSerializer.Deserialize<Data<ApplicationGrouping?>>(c.Request(), jsonOptions);
+            }
+            else
+            {
+                
+                c.options.doc_id = "6895974417154683";
+                c.options.variables =
+                    "{\"after\":\"" + cursor + "\",\"first\":" + count + ",\"id\":\"" + applicationid +
+                    "\",\"isShownInStore\":null,\"skuOrDisplayNameFilter\":\"\"}";
+                return JsonSerializer.Deserialize<Data<ApplicationGrouping?>>(c.Request(), jsonOptions);
+            }
+        }
 
         public static Data<Application> GetAchievements(string appId)
         {
@@ -198,10 +219,9 @@ namespace OculusGraphQLApiLib
             return JsonSerializer.Deserialize<Data<ApplicationForApplicationGroupingNodes>>(c.Request(), jsonOptions);
         }
 
-		public static Data<AppStoreAllAppsSection> AllApps(Headset headset, string cursor = null, int maxApps = 500)
+		public static Data<AppStoreAllAppsSection> AllApps(Headset headset, string cursor = null, int maxApps = 100)
         {
             GraphQLClient c = OculusTemplate();
-            c.options.doc_id = "6318857928214261";
             string id = "";
             switch(headset)
             {
@@ -233,7 +253,20 @@ namespace OculusGraphQLApiLib
                     id = "174868819587665";
                     break;
             }
-            c.options.variables = "{\"sectionId\":\"" + id + "\",\"sortOrder\":[],\"itemCount\":" + maxApps + ",\"cursor\":" + (cursor == null ? "null" : "\"" + cursor + "\"") + ",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\"}";
+
+            if (cursor == null)
+            {
+                c.options.doc_id = "6318857928214261";
+                c.options.variables =
+                    "{\"sectionId\":\"" + id + "\",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) +
+                    "\",\"itemCount\":" + maxApps + ",\"cursor\":null,\"sortOrder\":[]}";
+            }
+            else
+            {
+                c.options.doc_id = "7299574340075642";
+                c.options.variables = "{\"id\":\"" + id + "\",\"sortOrder\":[],\"itemCount\":" + maxApps + ",\"cursor\":" + (cursor == null ? "null" : "\"" + cursor + "\"") + "}";
+
+            }
             return JsonSerializer.Deserialize<Data<AppStoreAllAppsSection>>(c.Request());
         }
 
@@ -303,6 +336,15 @@ namespace OculusGraphQLApiLib
         {
             GraphQLClient c = OculusTemplate();
             c.options.doc_id = "6771539532935162";
+            c.options.variables = "{\"applicationID\":\"" + appid + "\"}";
+            return JsonSerializer.Deserialize<Data<Application>>(c.Request(), jsonOptions);
+        }
+        
+        
+        public static Data<Application> AppDetailsCloudStorageEnabled(string appid)
+        {
+            GraphQLClient c = OculusTemplate();
+            c.options.doc_id = "7121180161226339";
             c.options.variables = "{\"applicationID\":\"" + appid + "\"}";
             return JsonSerializer.Deserialize<Data<Application>>(c.Request(), jsonOptions);
         }

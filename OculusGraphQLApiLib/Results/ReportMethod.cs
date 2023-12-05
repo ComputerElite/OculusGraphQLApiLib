@@ -2,7 +2,8 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum ReportMethod
 {
-    E2E,
-    PLATFORM,
-    UNKNOWN = -1
+    UNKNOWN = -1,
+    E2E = 0,
+    PLATFORM = 1,
+    CALLBACK = 2,
 }

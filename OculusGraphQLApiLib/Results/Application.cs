@@ -6,6 +6,7 @@ namespace OculusGraphQLApiLib.Results
     public class Application
     {
         public string appName { get; set; } = "";
+        public bool cloud_backup_enabled { get; set; } = false;
         public AppStoreOffer baseline_offer { get; set; } = null;
         public string canonicalName { get; set; } = "";
         public OculusImage cover_landscape_image { get; set; } = new OculusImage();
@@ -67,7 +68,7 @@ namespace OculusGraphQLApiLib.Results
         public string website_url { get; set; } = "";
         public OculusBinary latest_supported_binary { get; set; } = new OculusBinary();
         public ReleaseChannel viewer_release_channel { get; set; } = new ReleaseChannel();
-        public bool is_blocked_by_verification { get; set; } = false;
+        public bool? is_blocked_by_verification { get; set; } = null;
         public string release_status { get; set; } = "";
         public ReleaseStatus release_status_enum
         {
@@ -149,17 +150,22 @@ namespace OculusGraphQLApiLib.Results
 
     public enum ImageType
     {
-        APP_IMG_LOGO_TRANSPARENT,
-        APP_IMG_HERO,
-        APP_IMG_COVER_PORTRAIT,
-        APP_IMG_COVER_SQUARE,
-        APP_IMG_COVER_LANDSCAPE,
-        APP_IMG_SMALL_LANDSCAPE,
-        APP_IMG_ICON,
-        APP_IMG_SCREENSHOT,
-        ACHIEVEMENT_IMG_LOCKED,
-        ACHIEVEMENT_IMG_UNLOCKED,
-        UNKNOWN = -1
+        UNKNOWN = -1,
+        APP_IMG_LOGO_TRANSPARENT = 0,
+        APP_IMG_HERO = 1,
+        APP_IMG_COVER_PORTRAIT = 2,
+        APP_IMG_COVER_SQUARE = 3,
+        APP_IMG_COVER_LANDSCAPE = 4,
+        APP_IMG_SMALL_LANDSCAPE = 5,
+        APP_IMG_ICON = 6,
+        APP_IMG_SCREENSHOT = 7,
+        ACHIEVEMENT_IMG_LOCKED = 8,
+        ACHIEVEMENT_IMG_UNLOCKED = 9,
+        APP_IMG_IMMERSIVE_LAYER_OBJECT_RIGHT = 10,
+        APP_IMG_IMMERSIVE_LAYER_OBJECT_LEFT = 11,
+        APP_IMG_IMMERSIVE_LAYER_BACKDROP = 12,
+        APP_IMG_IMMERSIVE_LAYER_LOGO = 13,
+        APP_IMG_CUBEMAP_SOURCE = 14
     }
     
     public class ApplicationForApplicationGroupingNodes : Application

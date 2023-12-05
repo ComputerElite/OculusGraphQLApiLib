@@ -5,4 +5,5 @@ public enum ShareCapability
     UNKNOWN = -1,
     SCREENRECORDING = 0,
     VRCASTING = 1,
+    LIVESTREAMING = 2,
 }

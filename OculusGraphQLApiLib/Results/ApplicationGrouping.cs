@@ -17,6 +17,7 @@ public class ApplicationGrouping
         }
     }
     public Nodes<AchievementDefinition> achievement_definitions { get; set; } = new Nodes<AchievementDefinition>();
+    public Edges<WoldsCustomDeveloperItemDefinition> worlds_custom_developer_item_definitions { get; set; } = new Edges<WoldsCustomDeveloperItemDefinition>();
     
     public Edges<Node<IAPItem>> add_ons { get; set; } = new Edges<Node<IAPItem>>();
 }
