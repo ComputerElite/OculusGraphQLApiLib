@@ -27,7 +27,7 @@ namespace OculusGraphQLApiLib.Results
 
     public class Item<T>
     {
-        public T item { get; set; } = default(T);
+        public T? item { get; set; } = default(T);
     }
 
     public class Extensions
@@ -75,7 +75,7 @@ namespace OculusGraphQLApiLib.Results
 
     public class Node<T>
     {
-        public T node { get; set; } = default(T);
+        public T? node { get; set; } = null;
         public string cursor { get; set; } = "";
     }
 
