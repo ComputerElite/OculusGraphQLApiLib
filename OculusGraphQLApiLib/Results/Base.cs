@@ -75,7 +75,7 @@ namespace OculusGraphQLApiLib.Results
 
     public class Node<T>
     {
-        public T? node { get; set; } = null;
+        public T? node { get; set; } = default(T);
         public string cursor { get; set; } = "";
     }
 
