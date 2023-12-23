@@ -17,10 +17,10 @@ namespace OculusGraphQLApiLib
                 if(output) Console.WriteLine("You got your token from the wrong place. Go to the payload tab. Don't get it from the url.");
                 return false;
             }
-            if (!token.StartsWith("OC"))
+            if (!token.StartsWith("OC") && !token.StartsWith("FRL"))
             {
-                Logger.Log("Token doesn't start with OC");
-                if(output) Console.WriteLine("Tokens must start with 'OC'. Please get a new one");
+                Logger.Log("Token doesn't start with OC or FRL");
+                if(output) Console.WriteLine("Tokens must start with 'OC' or 'FRL'. Please get a new one");
                 return false;
             }
             if (token.Contains("|"))
@@ -47,10 +47,10 @@ namespace OculusGraphQLApiLib
                 Logger.Log("Token contains %. Token most likely comes from an uri and won't work");
                 return "You got your token from the wrong place. Go to the payload tab. Don't get it from the url.";
             }
-            if (!token.StartsWith("OC"))
+            if (!token.StartsWith("OC") && !token.StartsWith("FRL"))
             {
-                Logger.Log("Token doesn't start with OC");
-                return "Tokens must start with 'OC'. Please get a new one";
+                Logger.Log("Token doesn't start with OC or FRL");
+                return "Tokens must start with 'OC' or 'FRL'. Please get a new one";
             }
             if (token.Contains("|"))
             {
