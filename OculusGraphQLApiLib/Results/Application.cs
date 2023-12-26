@@ -202,7 +202,8 @@ namespace OculusGraphQLApiLib.Results
         APP_IMG_IMMERSIVE_LAYER_OBJECT_LEFT = 11,
         APP_IMG_IMMERSIVE_LAYER_BACKDROP = 12,
         APP_IMG_IMMERSIVE_LAYER_LOGO = 13,
-        APP_IMG_CUBEMAP_SOURCE = 14
+        APP_IMG_CUBEMAP_SOURCE = 14,
+        APP_IMG_MARKDOWN_INLINE = 15,
     }
     
     public class ApplicationForApplicationGroupingNodes : Application
