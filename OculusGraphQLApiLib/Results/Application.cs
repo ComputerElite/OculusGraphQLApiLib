@@ -25,6 +25,7 @@ namespace OculusGraphQLApiLib.Results
         public bool is_approved { get; set; } = false;
         public bool is_concept { get; set; } = false; // aka AppLab
         public bool is_enterprise_enabled { get; set; } = false;
+        public bool long_description_uses_markdown { get; set; } = false;
         public Organization organization { get; set; } = new Organization();
         public string platform { get; set; } = "";
         public OculusPlatform platform_enum
@@ -48,9 +49,45 @@ namespace OculusGraphQLApiLib.Results
                 return DateTimeOffset.FromUnixTimeSeconds((long)release_date).DateTime;
             }
         }
+        public ApplicationReleaseInfo release_info { get; set; } = new ApplicationReleaseInfo();
         public Nodes<Revision> revisions { get; set; } = new Nodes<Revision>();
         public List<OculusImage> screenshots { get; set; } = new List<OculusImage>();
         public Edges<Node<OculusBinary>> supportedBinaries { get; set; } = new Edges<Node<OculusBinary>>();
+        public string developer_name { get; set; } = "";
+        public string? developer_privacy_policy_url { get; set; } = null;
+        public string? developer_terms_of_service_url { get; set; } = null;
+        public string comfort_rating { get; set; } = "";
+        public string category { get; set; } = "";
+        public List<string> supported_player_modes { get; set; } = new List<string>();
+        public List<SupportedPlayerMode> supported_player_modes_enum
+        {
+            get
+            {
+                List<SupportedPlayerMode> supported_player_modes_enum = new List<SupportedPlayerMode>();
+                foreach (string supported_player_mode in supported_player_modes)
+                {
+                    supported_player_modes_enum.Add((SupportedPlayerMode)Enum.Parse(typeof(SupportedPlayerMode), supported_player_mode, true));
+                }
+                return supported_player_modes_enum;
+            }
+        }
+        public List<InputDevice> supported_input_devices_list { get; set; } = new List<InputDevice>();
+        public Category category_enum
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(category)) return Category.UNKNOWN;
+                return (Category)Enum.Parse(typeof(Category), category);
+            }
+        }
+        public ComfortRating comfort_rating_enum
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(comfort_rating)) return ComfortRating.UNKNOWN;
+                return (ComfortRating)Enum.Parse(typeof(ComfortRating), comfort_rating);
+            }
+        } 
         public List<string> supported_hmd_platforms { get; set; } = new List<string>();
         public List<Headset> supported_hmd_platforms_enum
         {
