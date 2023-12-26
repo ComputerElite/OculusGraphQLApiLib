@@ -36,6 +36,6 @@ public enum Genre
     MEDICINE = 31,
     ROLLER_COASTER = 32,
     FOOD = 33,
-    
+    DOCUMENTARY_HISTORY = 34,
     
 }
