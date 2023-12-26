@@ -28,5 +28,8 @@ public enum Genre
     RACING = 23,
     NARRATIVE = 24,
     RPG = 25,
+    DINOSAURS = 26,
+    MOVIE = 27,
+    MEDIA_PLAYER = 28,
     
 }
