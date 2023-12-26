@@ -31,5 +31,6 @@ public enum Genre
     DINOSAURS = 26,
     MOVIE = 27,
     MEDIA_PLAYER = 28,
+    UTILITY = 29,
     
 }
