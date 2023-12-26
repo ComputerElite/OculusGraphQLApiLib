@@ -32,6 +32,8 @@ public enum Genre
     MOVIE = 27,
     MEDIA_PLAYER = 28,
     UTILITY = 29,
-    TRAVEL = 30
+    TRAVEL = 30,
+    MEDICINE = 31,
+    ROLLER_COASTER = 32
     
 }
