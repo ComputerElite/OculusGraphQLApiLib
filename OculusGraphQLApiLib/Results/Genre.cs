@@ -20,8 +20,9 @@ public enum Genre
     PUZZLE = 15,
     SIMULATION = 16,
     SHOOTER = 17,
-    REQUIRED = 18,
-    EXPERIENCE_360_NON_GAME = 19,
-    SOCIAL = 20,
+    EXPERIENCE_360_NON_GAME = 18,
+    SOCIAL = 19,
+    FLYING = 20,
+    PRODUCTIVITY = 21
     
 }

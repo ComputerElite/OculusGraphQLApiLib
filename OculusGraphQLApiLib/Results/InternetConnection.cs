@@ -2,6 +2,7 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum InternetConnection
 {
-    NOT_REQUIRED,
-    UNKNOWN = -1
+    UNKNOWN = -1,
+    NOT_REQUIRED = 0,
+    REQUIRED = 1
 }
