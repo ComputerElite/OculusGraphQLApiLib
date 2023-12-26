@@ -34,6 +34,8 @@ public enum Genre
     UTILITY = 29,
     TRAVEL = 30,
     MEDICINE = 31,
-    ROLLER_COASTER = 32
+    ROLLER_COASTER = 32,
+    FOOD = 33,
+    
     
 }
