@@ -23,6 +23,10 @@ public enum Genre
     EXPERIENCE_360_NON_GAME = 18,
     SOCIAL = 19,
     FLYING = 20,
-    PRODUCTIVITY = 21
+    PRODUCTIVITY = 21,
+    FIGHTING = 22,
+    RACING = 23,
+    NARRATIVE = 24,
+    
     
 }
