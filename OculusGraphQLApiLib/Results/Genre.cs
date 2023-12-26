@@ -16,4 +16,12 @@ public enum Genre
     ADVENTURE = 11,
     EXPLORATION = 12,
     DEGREE_360 = 13,
+    HORROR = 14,
+    PUZZLE = 15,
+    SIMULATION = 16,
+    SHOOTER = 17,
+    REQUIRED = 18,
+    EXPERIENCE_360_NON_GAME = 19,
+    SOCIAL = 20,
+    
 }
