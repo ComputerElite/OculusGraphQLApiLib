@@ -27,6 +27,6 @@ public enum Genre
     FIGHTING = 22,
     RACING = 23,
     NARRATIVE = 24,
-    
+    RPG = 25,
     
 }
