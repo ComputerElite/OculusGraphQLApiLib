@@ -78,18 +78,6 @@ public class PDPMetadata
     public double? recommended_memory_gb { get; set; } = null;
     public string recommended_processor { get; set; } = null;
     public List<string> supported_in_app_languages { get; set; } = new List<string>();
-    public List<SupportedInAppLanguage> supported_in_app_languages_enum
-    {
-        get
-        {
-            List<SupportedInAppLanguage> supported_in_app_languages_enum = new List<SupportedInAppLanguage>();
-            foreach (string supported_in_app_language in supported_in_app_languages)
-            {
-                supported_in_app_languages_enum.Add((SupportedInAppLanguage)Enum.Parse(typeof(SupportedInAppLanguage), supported_in_app_language, true));
-            }
-            return supported_in_app_languages_enum;
-        }
-    }
     public List<string> supported_input_devices { get; set; } = new List<string>();
     public List<SupportedInputDevice> supported_input_devices_enum
     {

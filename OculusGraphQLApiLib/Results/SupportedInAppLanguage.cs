@@ -13,5 +13,6 @@ public enum SupportedInAppLanguage
     ja,
     es_CL,
     es_MX,
-    es_CO
+    es_CO,
+    es
 }

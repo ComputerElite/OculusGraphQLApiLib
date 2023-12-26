@@ -2,7 +2,8 @@ namespace OculusGraphQLApiLib.Results;
 
 public enum OfferStatus
 {
-    PUBLISHED,
-    PENDING,
-    UNKNOWN
+    UNKNOWN = -1,
+    PENDING = 0,
+    PUBLISHED = 1,
+    CANCELLED =2 
 }

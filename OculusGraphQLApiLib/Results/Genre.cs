@@ -11,7 +11,7 @@ public enum Genre
     ACTION = 6,
     RELAXATION_MEDITATION = 7,
     MUSIC_VIDEO = 8,
-    CANCELLED = 9,
+    SPACE_UNIVERSE = 9,
     STRATEGY = 10,
     ADVENTURE = 11,
     EXPLORATION = 12,
