@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using ComputerUtils.Logging;
 using Microsoft.Win32;
+using OculusGraphQLApiLib.Results;
 
 namespace OculusGraphQLApiLib.GraphQL;
 
@@ -13,8 +14,8 @@ public class LoginClient
     public string etoken { get; set; } = "";
     public string token { get; set; } = "";
     public string blob { get; set; } = "";
-    public const string webviewTokensQuery = "https://meta.graph.meta.com//webview_tokens_query";
-    public const string webviewTokensDecrypt = "https://meta.graph.meta.com//webview_blobs_decrypt";
+    public const string webviewTokensQuery = "https://meta.graph.meta.com/webview_tokens_query";
+    public const string webviewTokensDecrypt = "https://meta.graph.meta.com/webview_blobs_decrypt";
     
     
     
@@ -45,7 +46,8 @@ public class LoginClient
             blob = blob,
             request_token = token
         }));
-        return JsonSerializer.Deserialize<LoginDecryptResponse>(response).access_token;
+        PlainData<XFRProfile> p = GraphQLClient.GetProfileToken(JsonSerializer.Deserialize<LoginDecryptResponse>(response).access_token);
+        return p.data.xfr_create_profile_token.profile_tokens[0].access_token;
     }
 
     public string DoPostRequest(string uri, string requestBody)
@@ -92,7 +94,7 @@ public class LoginClient
         Console.WriteLine("token: " + token);
         Console.WriteLine("blob: " + blob);
         this.blob = blob;
-        this.token = token;
+        //this.token = token;
         return GetToken();
     }
 }
