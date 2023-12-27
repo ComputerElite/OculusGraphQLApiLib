@@ -16,6 +16,7 @@ public class LoginClient
     public string blob { get; set; } = "";
     public const string webviewTokensQuery = "https://meta.graph.meta.com/webview_tokens_query";
     public const string webviewTokensDecrypt = "https://meta.graph.meta.com/webview_blobs_decrypt";
+    public const string frlToken = "https://meta.graph.meta.com/graphql";
     
     
     
@@ -46,7 +47,13 @@ public class LoginClient
             blob = blob,
             request_token = token
         }));
-        PlainData<XFRProfile> p = GraphQLClient.GetProfileToken(JsonSerializer.Deserialize<LoginDecryptResponse>(response).access_token);
+        string firstToken = JsonSerializer.Deserialize<LoginDecryptResponse>(response).access_token;
+        GraphQLClient c = GraphQLClient.OculusTemplate();
+        c.options.access_token = firstToken;
+        c.options.doc_id = "5787825127910775";
+        c.options.variables = "{\"app_id\":\"1582076955407037\"}";
+        response = DoPostRequest(frlToken, JsonSerializer.Serialize(c.options));
+        PlainData<XFRProfile> p = JsonSerializer.Deserialize<PlainData<XFRProfile>>(response);
         return p.data.xfr_create_profile_token.profile_tokens[0].access_token;
     }
 

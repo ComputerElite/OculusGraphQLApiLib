@@ -137,15 +137,6 @@ namespace OculusGraphQLApiLib
             return JsonSerializer.Deserialize<ViewerData<OculusUserWrapper>>(c.Request(), jsonOptions);
         }
 
-        public static PlainData<XFRProfile> GetProfileToken(string fraAccessToken)
-        {
-            GraphQLClient c = OculusTemplate();
-            c.options.access_token = fraAccessToken;
-            c.options.doc_id = "5787825127910775";
-            c.options.variables = "{\"app_id\":\"1582076955407037\"}";
-            return JsonSerializer.Deserialize<PlainData<XFRProfile>>(c.Request(), jsonOptions);
-        }
-
 		public static ReleaseChannelSettingWrapper ChangeSelectedReleaseChannel(string appId, string releaseChannelId)
 		{
 			GraphQLClient c = OculusTemplate();
