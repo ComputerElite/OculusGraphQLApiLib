@@ -60,7 +60,7 @@ public class LoginClient
     public string DoPostRequest(string uri, string requestBody)
     {
         string responseString = "";
-        Console.WriteLine("body: " + requestBody);
+        //Console.WriteLine("body: " + requestBody);
         using (HttpClient client = new HttpClient())
         {
             // Create StringContent with the request body and specify the media type
@@ -73,7 +73,7 @@ public class LoginClient
                 // Check if the request was successful (status code 200-299)
                 responseString = response.Content.ReadAsStringAsync().Result;
                 Logger.Log(response.StatusCode.ToString());
-                Console.WriteLine("response: " + responseString);
+                //Console.WriteLine("response: " + responseString);
                 if (response.IsSuccessStatusCode)
                 {
                     // Read and display the response content as a string
@@ -98,8 +98,8 @@ public class LoginClient
         string[] parameters = response.payload.uri.Replace("oculus://", "").Split('?')[1].Split('&');
         string token = parameters[0].Split('=')[1];
         string blob = parameters[1].Split('=')[1];
-        Console.WriteLine("token: " + token);
-        Console.WriteLine("blob: " + blob);
+        //Console.WriteLine("token: " + token);
+        //Console.WriteLine("blob: " + blob);
         this.blob = blob;
         //this.token = token;
         return GetToken();
