@@ -15,7 +15,7 @@ public enum Genre
     STRATEGY = 10,
     ADVENTURE = 11,
     EXPLORATION = 12,
-    DEGREE_360 = 13,
+    NEWS_AND_INFORMATION = 13,
     HORROR = 14,
     PUZZLE = 15,
     SIMULATION = 16,
@@ -37,5 +37,4 @@ public enum Genre
     ROLLER_COASTER = 32,
     FOOD = 33,
     DOCUMENTARY_HISTORY = 34,
-    NEWS_AND_INFORMATION = 35
 }
