@@ -16,6 +16,7 @@ namespace OculusGraphQLApiLib
         public const string oculusUri = "https://graph.oculus.com/graphql";
         public static string userToken = "";
         public const string oculusStoreToken = "OC|752908224809889|";
+        public const string oculusClientToken = "FRL|512466987071624|01d4a1f7fd0682aea7ee8ae987704d63";
         public static string forcedLocale = "";
         public static bool throwException = true;
         public static bool log = true;
