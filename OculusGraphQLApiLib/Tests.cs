@@ -50,7 +50,7 @@ namespace OculusGraphQLApiLib
         public static void StoreSearch()
         {
             Start();
-            Console.WriteLine(Serialize(GraphQLClient.StoreSearch("beat saber", Headset.MONTEREY)));
+            Console.WriteLine(Serialize(GraphQLClient.StoreSearch("beat saber", Headset.HOLLYWOOD)));
             Stop();
         }
 

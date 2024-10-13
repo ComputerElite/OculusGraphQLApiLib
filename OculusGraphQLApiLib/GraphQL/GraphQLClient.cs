@@ -14,6 +14,7 @@ namespace OculusGraphQLApiLib
         public string uri { get; set; } = "";
         public GraphQLOptions options { get; set; } = new GraphQLOptions();
         public const string oculusUri = "https://graph.oculus.com/graphql";
+        public const string metaOculusUri = "https://www.meta.com/ocapi/graphql";
         public static string userToken = "";
         public const string oculusStoreToken = "OC|752908224809889|";
         public const string oculusClientToken = "FRL|512466987071624|01d4a1f7fd0682aea7ee8ae987704d63";
@@ -315,7 +316,9 @@ namespace OculusGraphQLApiLib
         public static ViewerData<ContextualSearch> StoreSearch(string query, Headset headset) // DONE
         {
             GraphQLClient c = OculusTemplate();
-            c.options.doc_id = "3928907833885295";
+            c.uri = metaOculusUri;
+            c.options.doc_id = "24633449332970329";
+            c.options.access_token = null;
             c.options.variables = "{\"query\":\"" + query + "\",\"hmdType\":\"" + HeadsetTools.GetHeadsetCodeName(headset) + "\",\"firstSearchResultItems\":100}";
             return JsonSerializer.Deserialize<ViewerData<ContextualSearch>>(c.Request(), jsonOptions);
         }
@@ -425,19 +428,23 @@ namespace OculusGraphQLApiLib
 
     public class GraphQLOptions
     {
-        public string access_token { get; set; } = "";
+        public string? access_token { get; set; } = "";
         public string variables { get; set; } = "";
         public string doc_id { get; set; } = "";
-        public string doc { get; set; } = "";
+        public string? doc { get; set; } = null;
 
         public override string ToString()
         {
-            return "access_token=" + access_token + "&variables=" + variables + "&doc_id=" + doc_id + "&doc=" + doc;
+            return (access_token != null ? "access_token=" + access_token + "&" : "") + 
+                   "variables=" + variables +
+                   "&doc_id=" + doc_id + 
+                   (doc != null ? "&doc=" + doc : "");
         }
 
         public string ToStringEncoded()
         {
-            return "access_token=" + HttpUtility.UrlEncode(access_token) + "&variables=" + HttpUtility.UrlEncode(variables) + "&doc_id=" + doc_id + "&doc=" + HttpUtility.UrlEncode(doc);
+            return (access_token != null ? "access_token=" + HttpUtility.UrlEncode(access_token) + "&" : "")
+                   + "variables=" + HttpUtility.UrlEncode(variables) + "&doc_id=" + doc_id + (doc != null ? "&doc=" + HttpUtility.UrlEncode(doc) : "");
         }
 
         public string ToLoggingString()
