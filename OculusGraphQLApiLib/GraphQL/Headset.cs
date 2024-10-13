@@ -16,8 +16,8 @@ namespace OculusGraphQLApiLib
         PACIFIC = 4, // aka Go
         LAGUNA = 5, // aka Rift S
         SEACLIFF = 6, // aka Quest Pro
-        EUREKA = 7, // aka Quest 3 ?
-        PANTHER = 8, // Unknown
+        EUREKA = 7, // aka Quest 3
+        PANTHER = 8, // Quest 3S
         FUTURE_DEVICES = 9 // Future headsets
     }
 
@@ -73,7 +73,7 @@ namespace OculusGraphQLApiLib
                 case Headset.SEACLIFF:
                     return "Quest Pro";
                 case Headset.PANTHER:
-                    return "Unknown headset (PANTHER)";
+                    return "Quest 3S";
                 case Headset.FUTURE_DEVICES:
                     return "Future devices";
                 default:
@@ -102,7 +102,7 @@ namespace OculusGraphQLApiLib
                 case Headset.SEACLIFF:
                     return "Quest";
                 case Headset.PANTHER:
-                    return "Quest (maybe)";
+                    return "Quest";
                 default:
                     return "unknown";
             }
