@@ -50,18 +50,18 @@ public class LoginClient
             request_token = token
         }));
         string firstToken = JsonSerializer.Deserialize<LoginDecryptResponse>(response).access_token;
+        return SecondStage(firstToken);
+    }
+
+    public string SecondStage(string firstToken)
+    {
         GraphQLClient c = GraphQLClient.OculusTemplate();
         c.options.access_token = firstToken;
         c.options.doc_id = "5787825127910775";
         c.options.variables = "{\"app_id\":\"1582076955407037\"}";
-        response = DoPostRequest(frlToken, JsonSerializer.Serialize(c.options));
+        string response = DoPostRequest(frlToken, JsonSerializer.Serialize(c.options));
         PlainData<XFRProfile> p = JsonSerializer.Deserialize<PlainData<XFRProfile>>(response);
-        Logger.Log("Got user scoped token, getting quest scoped token next, credit to kaitlyn");
-        string secondToken = p.data.xfr_create_profile_token.profile_tokens[0].access_token;
-        string authenticateResponse = DoPostRequest(authenticate + secondToken, "");
-        LoginDecryptResponse loginDecryptResponse = JsonSerializer.Deserialize<LoginDecryptResponse>(authenticateResponse);
-        Logger.Log("Got scoped quest token, returning");
-        return loginDecryptResponse.access_token;
+        return p.data.xfr_create_profile_token.profile_tokens[0].access_token;
     }
 
     public string DoPostRequest(string uri, string requestBody)
