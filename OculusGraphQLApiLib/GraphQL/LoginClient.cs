@@ -17,8 +17,6 @@ public class LoginClient
     public const string webviewTokensQuery = "https://meta.graph.meta.com/webview_tokens_query";
     public const string webviewTokensDecrypt = "https://meta.graph.meta.com/webview_blobs_decrypt";
     public const string frlToken = "https://meta.graph.meta.com/graphql";
-    public const string authenticate =
-        "https://graph.oculus.com/authenticate_application?app_id=1481000308606657&access_token=";
     
     
     
@@ -102,7 +100,12 @@ public class LoginClient
 
     public string UriCallback(LoginApproveResponse response)
     {
-        string[] parameters = response.payload.uri.Replace("oculus://", "").Split('?')[1].Split('&');
+        return UriCallback(response.payload.uri);
+    }
+    
+    public string UriCallback(string uri)
+    {
+        string[] parameters = uri.Replace("oculus://", "").Split('?')[1].Split('&');
         string token = parameters[0].Split('=')[1];
         string blob = parameters[1].Split('=')[1];
         //Console.WriteLine("token: " + token);
