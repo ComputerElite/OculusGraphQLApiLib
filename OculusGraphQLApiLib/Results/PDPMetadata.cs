@@ -55,7 +55,7 @@ public class PDPMetadata
             return genres_enum;
         }
     }
-    public bool has_in_app_ads { get; set; } = false;
+    public bool? has_in_app_ads { get; set; } = false;
     public string internet_connection { get; set; } = "";
     public InternetConnection internet_connection_enum
     {
